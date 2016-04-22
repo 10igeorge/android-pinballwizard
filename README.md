@@ -6,13 +6,13 @@ Pinball Wizard is an application created to find pinball near you. By entering y
 Future implementations will include a Pinball Map API to deliver actual locations and machines, user input on machines at specific locations, events in your area, and a secret pinball game only accessible through gestures.
 
 ## Setup
-Clone this repository:
+Clone this repository while in desired directory:
 
-``` $ cd ~/Desktop $ git clone 
+``` $ git clone 
 https://github.com/10igeorge/android-pinballwizard.git ```
 
 
-Open Android Studio or Eclipse and open files from cloned location
+Open Android Studio or Eclipse and import project
 
 ## Legal
 Copyright (c) 2016 Isabelle George This software is licensed under the 
