@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#040126"
     tools:context=".SplashActivity">
 
     <TextView
@@ -11,9 +11,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Pinball Wizard"
+        android:textAlignment="center"
         android:id="@+id/splashLogo"
-        android:textSize="50sp"
-        android:textStyle="bold"
+        android:textSize="80sp"
         android:textColor="@color/white"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
