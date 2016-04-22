@@ -9,4 +9,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.isabellegeorge.pinballwizard.MainActivity">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchRegionButton"
+        android:layout_marginBottom="52dp"
+        android:text="Search"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/searchRegion"
+        android:id="@+id/textView2"
+        android:layout_above="@+id/searchRegionButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="56dp"
+        android:textSize="20sp" />
+
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/locationEditText"
+        android:hint="Enter zip code"
+        android:layout_above="@+id/searchRegionButton"
+        android:layout_centerHorizontal="true"
+        android:gravity="center" />
+
 </RelativeLayout>
