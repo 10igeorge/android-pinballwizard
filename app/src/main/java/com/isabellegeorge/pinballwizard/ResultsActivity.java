@@ -34,11 +34,11 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         };
 
     String[] hardCodedMachines = new String[] {
-            "Ground Kontrol",
-            "Scoreboard",
-            "Momo",
-            "Kelly's Olympian",
-            "Yamhill Pub",
+            "Monster Bash",
+            "ACDC",
+            "Attack from Mars",
+            "Addams Family",
+            "Creature from the Black Lagoon",
     };
 
     String[] filters = new String[] {
@@ -60,10 +60,6 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mFilter.setAdapter(spinnerAdapter);
 
-        ArrayAdapter listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, hardCodedLocations);
-
-        mLocations.setAdapter(listAdapter);
-
         Intent i = getIntent();
         String location = i.getStringExtra("location");
         mResultsTextView.setText("Pinball near " + location);
@@ -73,6 +69,13 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
         String item = parent.getItemAtPosition(position).toString();
         Toast.makeText(parent.getContext(), "Selected " + item, Toast.LENGTH_LONG).show();
+        if(item.equals("Locations")){
+            ArrayAdapter listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, hardCodedLocations);
+            mLocations.setAdapter(listAdapter);
+        } else {
+            ArrayAdapter listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, hardCodedMachines);
+            mLocations.setAdapter(listAdapter);
+        }
     }
 
     public void onNothingSelected(AdapterView<?> arg0){
