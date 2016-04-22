@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Pinball Wizard</string>
     <string name="searchRegion">Find pinball near you</string>
+    <string name="snackbar_text">Find pinball near you</string>
 </resources>
