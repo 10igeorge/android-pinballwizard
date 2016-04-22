@@ -33,18 +33,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         LayoutInflater inflater = getLayoutInflater();
         View text = inflater.inflate(R.layout.instructions_toast, null);
-        //TODO trim white space in dialog box
-        //TODO transfer to Dialog Fragment
+        //TODO option for do not show again
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this)
             .setView(text)
             .setPositiveButton("Got it", new
                 DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface instructions_toast, int BUTTON_NEUTRAL) {
+                    public void onClick(DialogInterface instructions_toast, int BUTTON_POSITIVE) {
                     }
                 });
-
-         AlertDialog alert = alertDialogBuilder.create();
-
+        AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
 
