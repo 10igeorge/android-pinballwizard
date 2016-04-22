@@ -39,7 +39,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
             "Attack from Mars",
             "Addams Family",
             "Creature from the Black Lagoon",
-    };
+        };
 
     String[] filters = new String[] {
             "Locations",
@@ -68,7 +68,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
         String item = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(), "Selected " + item, Toast.LENGTH_LONG).show();
+        Toast.makeText(parent.getContext(), "Filtering by " + item.toLowerCase(), Toast.LENGTH_LONG).show();
         if(item.equals("Locations")){
             ArrayAdapter listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, hardCodedLocations);
             mLocations.setAdapter(listAdapter);
@@ -82,3 +82,8 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         //do nothing
     }
 }
+
+
+
+
+//TODO: assign fragment to FAB for upcoming events w/ Pinball API
