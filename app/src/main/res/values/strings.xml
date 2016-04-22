@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Pinball Wizard</string>
     <string name="searchRegion">Find pinball near you</string>
-    <string name="snackbar_text">Find pinball near you</string>
+    <string name="ok">Got it</string>
+    <string name="instructions">"Enter your zip code to find pinball near you!\n\nOnce your location has been processed, you may filter by location or machine and view events in your area"</string>
 </resources>
