@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:text="Sprite Speed (?,?)"-->
+        <!--android:id="@+id/the_label" />-->
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:text="Last Collision XY (?,?)"-->
+        <!--android:id="@+id/the_other_label" />-->
+
+    <com.isabellegeorge.pinballwizard.GameBoard
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/the_canvas"/>
+</LinearLayout>

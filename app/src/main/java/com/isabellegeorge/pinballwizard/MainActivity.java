@@ -22,6 +22,7 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     @Bind(R.id.locationEditText) EditText mLocation;
     @Bind(R.id.searchRegionButton) Button mSearchRegion;
+    @Bind(R.id.gameButton) Button mGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mSearchRegion.setOnClickListener(this);
-
+        mGame.setOnClickListener(this);
 
         LayoutInflater inflater = getLayoutInflater();
         View text = inflater.inflate(R.layout.instructions_toast, null);
@@ -47,11 +48,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
         public void onClick(View v){
-        if(v == mSearchRegion){
-            String location = mLocation.getText().toString();
-            Intent i = new Intent(MainActivity.this, ResultsActivity.class);
-            i.putExtra("location", location);
-            startActivity(i);
+        switch(v.getId()){
+            case R.id.searchRegionButton:
+                String location = mLocation.getText().toString();
+                Intent i = new Intent(MainActivity.this, ResultsActivity.class);
+                i.putExtra("location", location);
+                startActivity(i);
+                break;
+            case R.id.gameButton:
+                Intent game = new Intent(MainActivity.this, GameActivity.class);
+                startActivity(game);
+                break;
         }
     }
 }
