@@ -20,7 +20,7 @@
     <TextView
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Enter your zip code to find pinball near you!\n\nOnce your location has been processed, you may filter by location or machine and view events in your area"
+        android:text="Don&apos;t see your region? Email us to have it added to the list!"
         android:textSize="15sp"
         android:paddingTop="40dp"
         android:paddingRight="25dp"

@@ -15,21 +15,26 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    @Bind(R.id.locationEditText) EditText mLocation;
-    @Bind(R.id.searchRegionButton) Button mSearchRegion;
+public class MainActivity extends AppCompatActivity {
+    public ArrayList<Region> mRegions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mSearchRegion.setOnClickListener(this);
-
+//        mSearchRegion.setOnClickListener(this);
+        getRegions();
 
         LayoutInflater inflater = getLayoutInflater();
         View text = inflater.inflate(R.layout.instructions_toast, null);
@@ -45,13 +50,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alert.show();
     }
 
-    @Override
-        public void onClick(View v){
-        if(v == mSearchRegion){
-            String location = mLocation.getText().toString();
-            Intent i = new Intent(MainActivity.this, ResultsActivity.class);
-            i.putExtra("location", location);
-            startActivity(i);
-        }
+    private void getRegions(){
+        final PinballService pinballService = new PinballService();
+        pinballService.findRegions(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }gi
+
+            @Override
+            public void onResponse(Call call, Response response) {
+                mRegions = pinballService.processRegions(response);
+
+
+            }
+        });
     }
+
+//    @Override
+//        public void onClick(View v){
+//        if(v == mSearchRegion){
+//            String location = mLocation.getText().toString();
+//            Intent i = new Intent(MainActivity.this, ResultsActivity.class);
+//            i.putExtra("location", location);
+//            startActivity(i);
+//        }
+//    }
 }

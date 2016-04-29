@@ -7,25 +7,20 @@
     tools:context="com.isabellegeorge.pinballwizard.MainActivity">
 
 
-
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/searchRegionButton"
-        android:text="Search"
-        android:textColor="#ffffff"
-        android:background="@color/colorAccent"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/locationEditText"
-        android:hint="Enter zip code"
-        android:gravity="center"
+        android:text="Select a city/region"
+        android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="165dp" />
+        android:textSize="20sp" />
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
