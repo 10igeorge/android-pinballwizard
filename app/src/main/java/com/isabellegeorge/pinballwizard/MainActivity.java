@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
+    @Bind(R.id.regionList) ListView regionList;
     public ArrayList<Region> mRegions = new ArrayList<>();
 
     @Override
@@ -56,13 +59,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-            }gi
+            }
 
             @Override
             public void onResponse(Call call, Response response) {
+
                 mRegions = pinballService.processRegions(response);
 
-
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String[] regionNames = new String[mRegions.size()];
+                        for(int i=0; i<regionNames.length; i++){
+                            regionNames[i] = mRegions.get(i).getCity();
+                        }
+                        ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, regionNames);
+                        regionList.setAdapter(adapter);
+                    }
+                });
             }
         });
     }
