@@ -67,9 +67,9 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
         Intent i = getIntent();
         String city = i.getStringExtra("city");
-        String id = i.getStringExtra("id");
         mResultsTextView.setText("Pinball near " + city);
         getLocations(city);
+        getLocationTypes();
     }
 
     private void getLocations(String city){
@@ -84,6 +84,22 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.d("hey", "hey");
+            }
+        });
+    }
+
+    private void getLocationTypes(){
+        final PinballService pinballService = new PinballService();
+
+        pinballService.findLocationTypes(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                pinballService.processLocationTypes(response);
             }
         });
     }

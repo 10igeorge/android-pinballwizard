@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-//        mSearchRegion.setOnClickListener(this);
         getRegions();
         regionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
