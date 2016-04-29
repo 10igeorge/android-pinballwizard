@@ -3,6 +3,7 @@ package com.isabellegeorge.pinballwizard;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +21,9 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class ResultsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     @Bind(R.id.resultsTextView) TextView mResultsTextView;
@@ -61,8 +66,26 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         mFilter.setAdapter(spinnerAdapter);
 
         Intent i = getIntent();
-        String location = i.getStringExtra("location");
-        mResultsTextView.setText("Pinball near " + location);
+        String city = i.getStringExtra("city");
+        String id = i.getStringExtra("id");
+        mResultsTextView.setText("Pinball near " + city);
+        getLocations(city);
+    }
+
+    private void getLocations(String city){
+        final PinballService pinballService = new PinballService();
+
+        pinballService.findLocations(city, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d("hey", "hey");
+            }
+        });
     }
 
     @Override

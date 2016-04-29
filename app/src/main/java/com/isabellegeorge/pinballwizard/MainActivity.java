@@ -1,15 +1,18 @@
 package com.isabellegeorge.pinballwizard;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +33,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
     @Bind(R.id.regionList) ListView regionList;
     public ArrayList<Region> mRegions = new ArrayList<>();
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,20 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 //        mSearchRegion.setOnClickListener(this);
         getRegions();
+        regionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String item = regionList.getItemAtPosition(i).toString();
+                for (Region region: mRegions){
+                    if(item.equals(region.getCity())){
+                        Intent intent = new Intent(MainActivity.this, ResultsActivity.class);
+                        intent.putExtra("id", region.getId());
+                        intent.putExtra("city", item);
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
 
         LayoutInflater inflater = getLayoutInflater();
         View text = inflater.inflate(R.layout.instructions_toast, null);
