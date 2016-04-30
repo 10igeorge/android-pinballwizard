@@ -16,13 +16,12 @@ public class Location {
     private ArrayList<String> machines;
     private ArrayList<String> machineConditions;
 
-    public Location(String name, String address, String city, String state, String zip, String locationTypeId, String phone, ArrayList<String> machines, ArrayList<String> machineConditions){
+    public Location(String name, String address, String city, String state, String zip, String phone, ArrayList<String> machines, ArrayList<String> machineConditions){
         this.name = name;
         this.address = address;
         this.city = city;
         this.state = state;
         this.zip = zip;
-        this.locationType = locationTypeId;
         this.phone = phone;
         this.machines = machines;
         this.machineConditions = machineConditions;
@@ -50,6 +49,9 @@ public class Location {
 
     public String getLocationType(){
         return locationType;
+    }
+    public void setLocationType(String type){
+        this.locationType = type;
     }
 
     public String getPhone(){

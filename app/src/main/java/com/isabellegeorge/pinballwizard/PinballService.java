@@ -10,6 +10,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -30,7 +32,7 @@ public class PinballService {
         call.enqueue(callback);
     }
 
-    public static void findLocationTypes(Callback callback){
+    public static void findLocationTypes(int id, Callback callback){
         OkHttpClient client = new OkHttpClient.Builder().build();
         String url = HttpUrl.parse(Constants.LOCATION_TYPES_URL).toString();
         Request request = new Request.Builder().url(url).build();
@@ -51,7 +53,6 @@ public class PinballService {
                     String type = detailsJSON.getString("name");
 
                     locationTypes.put(id, type);
-                    Log.d("location types", locationTypes.toString());
                 }
             }
 
@@ -72,9 +73,10 @@ public class PinballService {
                 JSONArray regionsJSON = regionJSON.getJSONArray("regions");
                 for (int i = 0; i<regionsJSON.length(); i++){
                     JSONObject detailsJSON = regionsJSON.getJSONObject(i);
+                    String name = detailsJSON.getString("name");
                     String city = detailsJSON.getString("full_name");
                     int id = detailsJSON.getInt("id");
-                    Region region = new Region(city, id);
+                    Region region = new Region(name, city, id);
                     regions.add(region);
                 }
             }
@@ -87,15 +89,35 @@ public class PinballService {
         return regions;
     }
 
-    public static void findLocations(String city, Callback callback){
+    public static void findLocations(String name, Callback callback){
         OkHttpClient client = new OkHttpClient.Builder().build();
         HttpUrl.Builder urlBuilder = HttpUrl.parse(Constants.LOCATIONS_URL).newBuilder();
-        urlBuilder.addPathSegment(city+"/locations");
+        urlBuilder.addPathSegment(name);
+        urlBuilder.addPathSegment("locations");
         String url = urlBuilder.toString();
         Request request = new Request.Builder().url(url).build();
         Call call = client.newCall(request);
         call.enqueue(callback);
     }
+
+    public void getLocationType(final Integer id, final Location location){
+        findLocationTypes(id, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                HashMap<Integer,String> results = processLocationTypes(response);
+                for(HashMap.Entry<Integer, String> pairs : results.entrySet()){
+                    if(pairs.getKey() == id){
+                        location.setLocationType(pairs.getValue());
+                    }
+                }
+            }
+        });
+     }
 
     public ArrayList<Location> processLocations(Response response){
         ArrayList<Location> locations = new ArrayList<>();
@@ -111,25 +133,40 @@ public class PinballService {
                     String city = detailsJSON.getString("city");
                     String state = detailsJSON.getString("state");
                     String zip = detailsJSON.getString("zip");
-                    int locationTypeId = detailsJSON.getInt("location_type_id");
+                    int locationTypeId;
+                    if(!detailsJSON.isNull("location_type_id")){
+                        locationTypeId = detailsJSON.getInt("location_type_id");
+                    } else {
+                        locationTypeId = 0;
+                    }
                     String phone = detailsJSON.getString("phone");
+
+
+
                     ArrayList<String> machines = new ArrayList<>();
                     ArrayList<String> machineConditions = new ArrayList<>();
 
-                    JSONArray machinesJSON = detailsJSON.getJSONArray("location_machine_xrefs");
-                    for(int j=0; j<machinesJSON.length(); j++){
-                        JSONObject machineDetailsJSON = machinesJSON.getJSONObject(i);
-                        int machineId = machineDetailsJSON.getInt("machine_id");
-                        //TODO: get machine name from id
 
-                        JSONArray machineConditionsJSON = machineDetailsJSON.getJSONArray("machine_conditions");
-                        for(int k=0; k<machineConditionsJSON.length(); k++){
-                            JSONObject commentsJSON =  machineConditionsJSON.getJSONObject(k);
-                            String comment = commentsJSON.getString("comment");
-                            machineConditions.add(comment);
-                        }
+                        JSONArray machinesJSON = detailsJSON.getJSONArray("location_machine_xrefs");
+
+
+                        for(int j=0; j<machinesJSON.length(); j++){
+                            JSONObject machineDetailsJSON = machinesJSON.getJSONObject(i);
+                            Log.d("HEYHEY", machineDetailsJSON+"");
+                            int machineId = machineDetailsJSON.getInt("machine_id");
+//                            TODO: get machine name from id
+
+                            JSONArray machineConditionsJSON = machineDetailsJSON.getJSONArray("machine_conditions");
+                            for(int k=0; k<machineConditionsJSON.length(); k++){
+                                JSONObject commentsJSON =  machineConditionsJSON.getJSONObject(k);
+                                String comment = commentsJSON.getString("comment");
+                                machineConditions.add(comment);
+                            }
                     }
-//                    Location location = new Location(name, address, city, state, zip, locationTypeId, phone,machines,machineConditions);
+
+                    Location location = new Location(name, address, city, state, zip, phone,machines,machineConditions);
+                    locations.add(location);
+                    getLocationType(locationTypeId, location);
                 }
             }
         } catch (IOException e){

@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                     if(item.equals(region.getCity())){
                         Intent intent = new Intent(MainActivity.this, ResultsActivity.class);
                         intent.putExtra("id", region.getId());
+                        intent.putExtra("name", region.getUrlName());
                         intent.putExtra("city", item);
                         startActivity(intent);
                     }
@@ -97,14 +98,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-//    @Override
-//        public void onClick(View v){
-//        if(v == mSearchRegion){
-//            String location = mLocation.getText().toString();
-//            Intent i = new Intent(MainActivity.this, ResultsActivity.class);
-//            i.putExtra("location", location);
-//            startActivity(i);
-//        }
-//    }
 }

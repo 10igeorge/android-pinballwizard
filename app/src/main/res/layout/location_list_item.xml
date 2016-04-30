@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="horizontal"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:layout_marginBottom="10dp"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/locationName"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        android:text="Location Name"
+        android:textColor="@color/colorPrimary"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location Type"
+        android:id="@+id/locationType"
+        android:layout_below="@+id/locationName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="# Machines"
+        android:id="@+id/numberMachines"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/colorAccent"
+        android:layout_gravity="right" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </RelativeLayout>
+</LinearLayout>
+</LinearLayout>

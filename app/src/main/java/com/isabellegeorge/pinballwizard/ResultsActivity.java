@@ -3,6 +3,8 @@ package com.isabellegeorge.pinballwizard;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,24 +29,11 @@ import okhttp3.Response;
 
 public class ResultsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     @Bind(R.id.resultsTextView) TextView mResultsTextView;
-    @Bind(R.id.locationsWithPinball) ListView mLocations;
+
     @Bind(R.id.filterSpinner) Spinner mFilter;
-
-    String[] hardCodedLocations = new String[] {
-            "Ground Kontrol",
-            "Scoreboard",
-            "Momo",
-            "Kelly's Olympian",
-            "Yamhill Pub",
-        };
-
-    String[] hardCodedMachines = new String[] {
-            "Monster Bash",
-            "ACDC",
-            "Attack from Mars",
-            "Addams Family",
-            "Creature from the Black Lagoon",
-        };
+    @Bind(R.id.locationsWithPinball) RecyclerView locationsRecycler;
+    private String name;
+    public ArrayList<Location> locations = new ArrayList<>();
 
     String[] filters = new String[] {
             "Locations",
@@ -66,10 +55,9 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         mFilter.setAdapter(spinnerAdapter);
 
         Intent i = getIntent();
+        name = i.getStringExtra("name");
         String city = i.getStringExtra("city");
         mResultsTextView.setText("Pinball near " + city);
-        getLocations(city);
-        getLocationTypes();
     }
 
     private void getLocations(String city){
@@ -82,24 +70,19 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.d("hey", "hey");
-            }
-        });
-    }
+            public void onResponse(Call call, Response response) {
+                locations = pinballService.processLocations(response);
+                Log.v("HEREHERE", locations+"");
 
-    private void getLocationTypes(){
-        final PinballService pinballService = new PinballService();
+                ResultsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
-        pinballService.findLocationTypes(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                pinballService.processLocationTypes(response);
+                        locationsRecycler.setAdapter(new LocationsListAdapter(getApplicationContext(), locations));
+                        locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
+                        locationsRecycler.setHasFixedSize(true);
+                    }
+                });
             }
         });
     }
@@ -109,11 +92,9 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         String item = parent.getItemAtPosition(position).toString();
         Toast.makeText(parent.getContext(), "Filtering by " + item.toLowerCase(), Toast.LENGTH_LONG).show();
         if(item.equals("Locations")){
-            ArrayAdapter listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, hardCodedLocations);
-            mLocations.setAdapter(listAdapter);
+            getLocations(name);
         } else {
-            ArrayAdapter listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, hardCodedMachines);
-            mLocations.setAdapter(listAdapter);
+            //do something
         }
     }
 
