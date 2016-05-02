@@ -1,4 +1,4 @@
-package com.isabellegeorge.pinballwizard;
+package com.isabellegeorge.pinballwizard.models;
 
 /**
  * Created by Epicodus on 4/28/16.

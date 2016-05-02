@@ -1,25 +1,27 @@
-package com.isabellegeorge.pinballwizard;
+package com.isabellegeorge.pinballwizard.ui;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.isabellegeorge.pinballwizard.models.Location;
+import com.isabellegeorge.pinballwizard.models.Machine;
+import com.isabellegeorge.pinballwizard.services.PinballService;
+import com.isabellegeorge.pinballwizard.R;
+import com.isabellegeorge.pinballwizard.adapters.LocationsListAdapter;
+import com.isabellegeorge.pinballwizard.adapters.MachinesListAdapter;
+
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import butterknife.Bind;

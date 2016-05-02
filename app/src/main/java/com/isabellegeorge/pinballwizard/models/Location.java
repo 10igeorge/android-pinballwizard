@@ -1,4 +1,4 @@
-package com.isabellegeorge.pinballwizard;
+package com.isabellegeorge.pinballwizard.models;
 
 import java.util.ArrayList;
 

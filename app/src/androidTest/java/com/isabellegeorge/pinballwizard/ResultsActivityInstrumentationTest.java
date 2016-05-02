@@ -2,6 +2,8 @@ package com.isabellegeorge.pinballwizard;
 
 import android.support.test.rule.ActivityTestRule;
 
+import com.isabellegeorge.pinballwizard.ui.ResultsActivity;
+
 import org.junit.Rule;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.isabellegeorge.pinballwizard;
+package com.isabellegeorge.pinballwizard.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
+import com.isabellegeorge.pinballwizard.models.Machine;
+import com.isabellegeorge.pinballwizard.R;
+import com.isabellegeorge.pinballwizard.ui.MachineDetailActivity;
+
 import java.util.ArrayList;
 
 import butterknife.Bind;

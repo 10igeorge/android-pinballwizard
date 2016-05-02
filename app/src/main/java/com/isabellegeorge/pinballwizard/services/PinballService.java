@@ -1,7 +1,12 @@
-package com.isabellegeorge.pinballwizard;
+package com.isabellegeorge.pinballwizard.services;
 
 
 import android.util.Log;
+
+import com.isabellegeorge.pinballwizard.Constants;
+import com.isabellegeorge.pinballwizard.models.Location;
+import com.isabellegeorge.pinballwizard.models.Machine;
+import com.isabellegeorge.pinballwizard.models.Region;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,13 +14,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import okhttp3.Call;
 import okhttp3.Callback;

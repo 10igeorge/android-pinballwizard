@@ -11,18 +11,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.SplashActivity"
             android:theme="@style/NoAppBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".ResultsActivity" >
+        <activity android:name=".ui.MainActivity"/>
+        <activity android:name=".ui.ResultsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.isabellegeorge.pinballwizard.MainActivity"/>
+                android:value=".ui.MainActivity"/>
         </activity>
     </application>
 

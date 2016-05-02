@@ -1,4 +1,4 @@
-package com.isabellegeorge.pinballwizard;
+package com.isabellegeorge.pinballwizard.ui;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.isabellegeorge.pinballwizard.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

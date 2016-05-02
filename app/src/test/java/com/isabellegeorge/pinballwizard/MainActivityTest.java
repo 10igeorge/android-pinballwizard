@@ -3,7 +3,9 @@ package com.isabellegeorge.pinballwizard;
 import android.content.Intent;
 import android.os.Build;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import com.isabellegeorge.pinballwizard.ui.MainActivity;
+import com.isabellegeorge.pinballwizard.ui.ResultsActivity;
 
 import org.junit.Before;
 import org.junit.Test;
