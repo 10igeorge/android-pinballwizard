@@ -3,6 +3,7 @@ package com.isabellegeorge.pinballwizard.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import com.isabellegeorge.pinballwizard.models.Location;
 import com.isabellegeorge.pinballwizard.R;
 import com.isabellegeorge.pinballwizard.ui.LocationDetailActivity;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -54,14 +57,15 @@ public class LocationsListAdapter extends RecyclerView.Adapter<LocationsListAdap
 
         public LocationsViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
             c = itemView.getContext();
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int itemPosition = getLayoutPosition();
                     Intent i = new Intent(c, LocationDetailActivity.class);
-                    //putExtras
+                    i.putExtra("startPosition", itemPosition+"");
+                    i.putExtra("locations", Parcels.wrap(locations));
                     c.startActivity(i);
                 }
             });

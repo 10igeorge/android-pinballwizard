@@ -1,10 +1,14 @@
 package com.isabellegeorge.pinballwizard.models;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 
 /**
  * Created by Epicodus on 4/29/16.
  */
+
+@Parcel
 public class Location {
     private String name;
     private String address;
@@ -26,6 +30,8 @@ public class Location {
         this.machines = machines;
         this.machineConditions = machineConditions;
     }
+
+    public Location() {}
 
     public String getLocationName(){
         return name;

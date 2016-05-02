@@ -119,6 +119,7 @@ public class PinballService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.d("NUM OF LOCATIONS", locations.size() + "");
         return locations;
     }
 
