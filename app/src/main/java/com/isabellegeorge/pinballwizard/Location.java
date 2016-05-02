@@ -54,6 +54,14 @@ public class Location {
         this.locationType = type;
     }
 
+    public int getNumberMachines(){
+        int machineCount=0;
+        for(int i=0; i<machines.size(); i++){
+            machineCount++;
+        }
+        return machineCount;
+    }
+
     public String getPhone(){
         return phone;
     }

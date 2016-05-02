@@ -25,7 +25,6 @@ public class LocationsListAdapter extends RecyclerView.Adapter<LocationsListAdap
     public LocationsListAdapter(Context c, ArrayList<Location> locations){
         this.locations = locations;
         this.c = c;
-        Log.v("HEREHERE", locations+"");
     }
 
     @Override
@@ -66,15 +65,10 @@ public class LocationsListAdapter extends RecyclerView.Adapter<LocationsListAdap
             });
         }
 
-
          public void bindLocation(Location location){
-             int machineNumber = 0;
             locationName.setText(location.getLocationName());
             locationType.setText(location.getLocationType());
-             for(int i=0; i<location.getMachineConditions().size(); i++){
-                 machineNumber++;
-             }
-            numberMachines.setText(machineNumber + " Machines");
+            numberMachines.setText(location.getNumberMachines() + " Machines");
         }
     }
 }

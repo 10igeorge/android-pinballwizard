@@ -29,11 +29,12 @@ import okhttp3.Response;
 
 public class ResultsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     @Bind(R.id.resultsTextView) TextView mResultsTextView;
-
     @Bind(R.id.filterSpinner) Spinner mFilter;
     @Bind(R.id.locationsWithPinball) RecyclerView locationsRecycler;
     private String name;
     public ArrayList<Location> locations = new ArrayList<>();
+    public ArrayList<Machine> machines = new ArrayList<>();
+
 
     String[] filters = new String[] {
             "Locations",
@@ -87,6 +88,30 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         });
     }
 
+    private void getMachines(){
+        final PinballService pinballService = new PinballService();
+
+        pinballService.findMachines(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                machines = pinballService.processMachines(response);
+                ResultsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        locationsRecycler.setAdapter(new MachinesListAdapter(getApplicationContext(), machines));
+                        locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
+                        locationsRecycler.setHasFixedSize(true);
+                    }
+                });
+            }
+        });
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
         String item = parent.getItemAtPosition(position).toString();
@@ -94,7 +119,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         if(item.equals("Locations")){
             getLocations(name);
         } else {
-            //do something
+            getMachines();
         }
     }
 
