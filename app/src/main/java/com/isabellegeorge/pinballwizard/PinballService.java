@@ -9,9 +9,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -86,18 +90,18 @@ public class PinballService {
                     JSONArray machinesJSON = detailsJSON.getJSONArray("location_machine_xrefs");
 
 
-                    for (int j = 0; j < machinesJSON.length(); j++) {
-                        JSONObject machineDetailsJSON = machinesJSON.getJSONObject(i);
-                        String machineId = machineDetailsJSON.getString("machine_id");
-                        machines.add(machineId);
-//                      TODO: get machine name from id
-                        JSONArray machineConditionsJSON = machineDetailsJSON.getJSONArray("machine_conditions");
-                        for (int k = 0; k < machineConditionsJSON.length(); k++) {
-                            JSONObject commentsJSON = machineConditionsJSON.getJSONObject(k);
-                            String comment = commentsJSON.getString("comment");
-                            machineConditions.add(comment);
-                        }
-                    }
+//                    for (int j = 0; j < machinesJSON.length(); j++) {
+//                        JSONObject machineDetailsJSON = machinesJSON.getJSONObject(i);
+//                        String machineId = machineDetailsJSON.getString("machine_id");
+//                        machines.add(machineId);
+////                      TODO: get machine name from id
+//                        JSONArray machineConditionsJSON = machineDetailsJSON.getJSONArray("machine_conditions");
+//                        for (int k = 0; k < machineConditionsJSON.length(); k++) {
+//                            JSONObject commentsJSON = machineConditionsJSON.getJSONObject(k);
+//                            String comment = commentsJSON.getString("comment");
+//                            machineConditions.add(comment);
+//                        }
+//                    }
 
                     int locationTypeId;
                     if (!detailsJSON.isNull("location_type_id")) {
@@ -170,7 +174,18 @@ public class PinballService {
         });
     }
 
-    public static void findMachines(Callback callback) {
+    public static void findMachines(String name, Callback callback) {
+        OkHttpClient client = new OkHttpClient.Builder().build();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(Constants.MACHINES_REGION_URL).newBuilder();
+        urlBuilder.addPathSegment(name);
+        urlBuilder.addPathSegment("location_machine_xrefs");
+        String url = urlBuilder.toString();
+        Request request = new Request.Builder().url(url).build();
+        Call call = client.newCall(request);
+        call.enqueue(callback);
+    }
+
+    public static void findMachineNames(Callback callback) {
         OkHttpClient client = new OkHttpClient.Builder().build();
         String url = HttpUrl.parse(Constants.MACHINES_URL).toString();
         Request request = new Request.Builder().url(url).build();
@@ -178,7 +193,7 @@ public class PinballService {
         call.enqueue(callback);
     }
 
-    public HashMap<Integer, String> processMachineName(Response response) {
+    public HashMap<Integer, String> processMachineNames(Response response) {
         HashMap<Integer, String> machineNames = new HashMap<>();
         try {
             String jsonData = response.body().string();
@@ -203,20 +218,46 @@ public class PinballService {
 
     public ArrayList<Machine> processMachines(Response response) {
         ArrayList<Machine> machines = new ArrayList<>();
+
         try {
             String jsonData = response.body().string();
             if (response.isSuccessful()) {
-                JSONObject machineNameJSON = new JSONObject(jsonData);
-                JSONArray machineNamesJSON = machineNameJSON.getJSONArray("machines");
-                for (int i = 0; i < machineNamesJSON.length(); i++) {
-                    JSONObject detailsJSON = machineNamesJSON.getJSONObject(i);
-                    Integer id = detailsJSON.getInt("id");
-                    Integer year = detailsJSON.getInt("year");
-                    String name = detailsJSON.getString("name");
-                    String manufacturer = detailsJSON.getString("manufacturer");
+                ArrayList<Integer> ids = new ArrayList<>();
+                JSONObject machineXrefJSON = new JSONObject(jsonData);
+
+                JSONArray machineXrefsJSON = machineXrefJSON.getJSONArray("location_machine_xrefs");
+                for (int i = 0; i < machineXrefsJSON.length(); i++) {
+                    Log.v("IDS", ""+ids);
+                    JSONObject detailsJSON = machineXrefsJSON.getJSONObject(i);
+                    Integer id = detailsJSON.getJSONObject("machine").getInt("id");
+                    ids.add(id);
+
+                    String name = detailsJSON.getJSONObject("machine").getString("name");
+                    Integer year = detailsJSON.getJSONObject("machine").getInt("year");
+                    String manufacturer = detailsJSON.getJSONObject("machine").getString("manufacturer");
                     Machine machine = new Machine(id, name, year, manufacturer);
-                    machines.add(machine);
+
+
+                    if(machines.isEmpty()){
+                        machines.add(machine);
+                    } else {
+                        boolean add = false;
+                        for(int j=0; j<machines.size(); j++){
+
+                            if(machines.get(j).getMachineId() == id){
+                                Log.v("MACHINEID", ""+machines.get(j).getMachineId());
+                                Log.v("ID", ""+id);
+
+                            } else {
+                                add = true;
+                            }
+                        }
+                        if(add){
+                            machines.add(machine);
+                        }
+                    }
                 }
+
             }
 
         } catch (IOException e) {
@@ -224,6 +265,19 @@ public class PinballService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        Log.v("HEY", ""+machines);
+//        if(machinesFinal.isEmpty()){
+//
+//        }
+//        for(int i=0; i<machinesFinal.size()-1; i++){
+//            for(int j=0; j<machines.size(); j++){
+//                if(machinesFinal.get(i).getMachineId() != machines.get(j).getMachineId()){
+//                    machinesFinal.add(machines.get(j));
+//                }
+//                Log.v("MACH", ""+machinesFinal+"");
+//            }
+//        }
         return machines;
     }
 }

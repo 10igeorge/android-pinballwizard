@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import butterknife.Bind;
@@ -73,12 +74,9 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
             @Override
             public void onResponse(Call call, Response response) {
                 locations = pinballService.processLocations(response);
-                Log.v("HEREHERE", locations+"");
-
                 ResultsActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
                         locationsRecycler.setAdapter(new LocationsListAdapter(getApplicationContext(), locations));
                         locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
                         locationsRecycler.setHasFixedSize(true);
@@ -88,10 +86,10 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         });
     }
 
-    private void getMachines(){
+    private void getMachines(String name){
         final PinballService pinballService = new PinballService();
 
-        pinballService.findMachines(new Callback() {
+        pinballService.findMachines(name, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -119,7 +117,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         if(item.equals("Locations")){
             getLocations(name);
         } else {
-            getMachines();
+            getMachines(name);
         }
     }
 

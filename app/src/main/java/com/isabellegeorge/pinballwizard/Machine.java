@@ -18,6 +18,15 @@ public class Machine {
         this.manufacturer = manufacturer;
     }
 
+
+    public Integer getMachineId(){
+        return id;
+    }
+
+    public void setMachineName(String name){
+        this.name = name;
+    }
+
     public String getMachineName(){
         return name;
     }
