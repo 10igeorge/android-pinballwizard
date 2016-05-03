@@ -18,7 +18,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_marginBottom="1dp"
-            android:paddingBottom="20dp">
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -31,15 +31,15 @@
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="# Machines"
-                android:id="@+id/numberMachineFragment"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="# Machines"-->
+                <!--android:id="@+id/numberMachineFragment"-->
+                <!--android:textColor="@color/colorAccent"-->
+                <!--android:textStyle="bold"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_alignParentBottom="true" />-->
 
             <TextView
                 android:layout_width="wrap_content"
@@ -64,21 +64,6 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_above="@+id/saveLocationButton">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="View on Yelp"
-                    android:background="@color/colorPrimary"
-                    android:id="@+id/websiteTextView"
-                    android:drawableLeft="@drawable/ic_exit_to_app_white_18px"
-                    android:drawablePadding="4dp"
-                    android:textColor="@color/white"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:padding="10dp"
-                    android:layout_marginBottom="1dp"
-                    android:gravity="center_vertical" />
 
                 <TextView
                     android:layout_width="match_parent"

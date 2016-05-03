@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,6 +36,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     @Bind(R.id.filterSpinner) Spinner mFilter;
     @Bind(R.id.locationsWithPinball) RecyclerView locationsRecycler;
     private String name;
+    private int regionId;
     public ArrayList<Location> locations = new ArrayList<>();
     public ArrayList<Machine> machines = new ArrayList<>();
 
@@ -60,9 +62,29 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
         Intent i = getIntent();
         name = i.getStringExtra("name");
+        regionId = i.getIntExtra("id", 0);
         String city = i.getStringExtra("city");
         mResultsTextView.setText("Pinball near " + city);
+
+
+
     }
+
+//    private void setMachines(final Location location){
+//        final PinballService pinballService = new PinballService();
+//        pinballService.findMachines(name, new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                pinballService.getLocationMachines(name, location);
+//                Log.v("did i get here", "Ya");
+//            }
+//        });
+//    }
 
     private void getLocations(String city){
         final PinballService pinballService = new PinballService();
@@ -75,12 +97,44 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
             @Override
             public void onResponse(Call call, Response response) {
-                locations = pinballService.processLocations(response);
-                pinballService.get
+                locations = pinballService.processLocations(regionId, response);
+
+                for(int i=0; i<locations.size(); i++){
+                    locations.get(i).setUrlPath(name);
+                }
+
                 ResultsActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         locationsRecycler.setAdapter(new LocationsListAdapter(getApplicationContext(), locations));
+                        locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
+                        locationsRecycler.setHasFixedSize(true);
+
+                    }
+                });
+            }
+        });
+    }
+
+
+
+
+    private void getMachines(String name){
+        final PinballService pinballService = new PinballService();
+
+        pinballService.findMachines(name, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                machines = pinballService.processMachines(response);
+                ResultsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        locationsRecycler.setAdapter(new MachinesListAdapter(getApplicationContext(), machines));
                         locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
                         locationsRecycler.setHasFixedSize(true);
                     }
@@ -88,30 +142,6 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
             }
         });
     }
-
-//    private void getMachines(String name){
-//        final PinballService pinballService = new PinballService();
-//
-//        pinballService.findMachines(name, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                machines = pinballService.processMachines(response);
-//                ResultsActivity.this.runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        locationsRecycler.setAdapter(new MachinesListAdapter(getApplicationContext(), machines));
-//                        locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
-//                        locationsRecycler.setHasFixedSize(true);
-//                    }
-//                });
-//            }
-//        });
-//    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id){

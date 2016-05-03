@@ -27,7 +27,6 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
     @Bind(R.id.regionList) ListView regionList;
     public ArrayList<Region> mRegions = new ArrayList<>();
-    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         //TODO option for do not show again
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this)
             .setView(text)
-            .setPositiveButton("Got it", new
+            .setPositiveButton("OK", new
                 DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface instructions_toast, int BUTTON_POSITIVE) {
                     }
