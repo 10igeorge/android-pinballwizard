@@ -2,6 +2,7 @@ package com.isabellegeorge.pinballwizard.models;
 
 import org.parceler.Parcel;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 
 @Parcel
 public class Location {
+    private int regionId;
+    private int id;
     private String name;
     private String address;
     private String city;
@@ -17,21 +20,37 @@ public class Location {
     private String zip;
     private String locationType;
     private String phone;
-    private ArrayList<String> machines;
+    private String urlPath;
+    private ArrayList<Machine> machines = new ArrayList<>();
     private ArrayList<String> machineConditions;
 
-    public Location(String name, String address, String city, String state, String zip, String phone, ArrayList<String> machines, ArrayList<String> machineConditions){
+    public Location(int regionId, int id, String name, String address, String city, String state, String zip, String phone, ArrayList<Machine> machines, ArrayList<String> machineConditions){
+        this.regionId = regionId;
+        this.id = id;
         this.name = name;
         this.address = address;
         this.city = city;
         this.state = state;
         this.zip = zip;
         this.phone = phone;
-        this.machines = machines;
         this.machineConditions = machineConditions;
     }
 
     public Location() {}
+
+    public int getRegionId(){return regionId;}
+
+    public int getLocationId(){
+        return id;
+    }
+
+    public void setUrlPath(String urlPath){
+        this.urlPath = urlPath;
+    }
+
+    public String getRegionName(){
+        return urlPath;
+    }
 
     public String getLocationName(){
         return name;
@@ -68,12 +87,12 @@ public class Location {
         return machineCount;
     }
 
-    public String getPhone(){
-        return phone;
+    public ArrayList<Machine> getMachines(){
+        return machines;
     }
 
-    public ArrayList<String> getMachines(){
-        return machines;
+    public void setMachines(ArrayList<Machine> machines){
+        this.machines = machines;
     }
 
     public ArrayList<String> getMachineConditions(){

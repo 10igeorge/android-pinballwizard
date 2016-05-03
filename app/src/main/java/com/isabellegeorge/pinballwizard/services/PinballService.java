@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -46,6 +47,7 @@ public class PinballService {
                     int id = detailsJSON.getInt("id");
                     Region region = new Region(name, city, id);
                     regions.add(region);
+
                 }
             }
         } catch (IOException e) {
@@ -67,7 +69,7 @@ public class PinballService {
         call.enqueue(callback);
     }
 
-    public ArrayList<Location> processLocations(Response response) {
+    public ArrayList<Location> processLocations(int regionId, Response response) {
         ArrayList<Location> locations = new ArrayList<>();
         try {
             String jsonData = response.body().string();
@@ -76,6 +78,7 @@ public class PinballService {
                 JSONArray locationsJSON = locationJSON.getJSONArray("locations");
                 for (int i = 0; i < locationsJSON.length(); i++) {
                     JSONObject detailsJSON = locationsJSON.getJSONObject(i);
+                    int id = detailsJSON.getInt("id");
                     String name = detailsJSON.getString("name");
                     String address = detailsJSON.getString("street");
                     String city = detailsJSON.getString("city");
@@ -83,24 +86,8 @@ public class PinballService {
                     String zip = detailsJSON.getString("zip");
                     String phone = detailsJSON.getString("phone");
 
-                    ArrayList<String> machines = new ArrayList<>();
+                    ArrayList<Machine> machines = new ArrayList<>();
                     ArrayList<String> machineConditions = new ArrayList<>();
-
-                    JSONArray machinesJSON = detailsJSON.getJSONArray("location_machine_xrefs");
-
-
-//                    for (int j = 0; j < machinesJSON.length(); j++) {
-//                        JSONObject machineDetailsJSON = machinesJSON.getJSONObject(i);
-//                        String machineId = machineDetailsJSON.getString("machine_id");
-//                        machines.add(machineId);
-////                      TODO: get machine name from id
-//                        JSONArray machineConditionsJSON = machineDetailsJSON.getJSONArray("machine_conditions");
-//                        for (int k = 0; k < machineConditionsJSON.length(); k++) {
-//                            JSONObject commentsJSON = machineConditionsJSON.getJSONObject(k);
-//                            String comment = commentsJSON.getString("comment");
-//                            machineConditions.add(comment);
-//                        }
-//                    }
 
                     int locationTypeId;
                     if (!detailsJSON.isNull("location_type_id")) {
@@ -109,9 +96,10 @@ public class PinballService {
                         locationTypeId = 0;
                     }
 
-                    Location location = new Location(name, address, city, state, zip, phone, machines, machineConditions);
+                    Location location = new Location(regionId, id, name, address, city, state, zip, phone, machines, machineConditions);
                     locations.add(location);
                     getLocationType(locationTypeId, location);
+                    //TODO: find region name thru id
                 }
             }
         } catch (IOException e) {
@@ -119,7 +107,6 @@ public class PinballService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d("NUM OF LOCATIONS", locations.size() + "");
         return locations;
     }
 
@@ -174,6 +161,50 @@ public class PinballService {
         });
     }
 
+    public HashMap<Integer, String> processRegionNames(Response response){
+        HashMap<Integer, String> regionNames = new HashMap<>();
+        try {
+            String jsonData = response.body().string();
+            if (response.isSuccessful()) {
+                JSONObject regionListJSON = new JSONObject(jsonData);
+                JSONArray allRegionsJSON = regionListJSON.getJSONArray("regions");
+                for (int i = 0; i < allRegionsJSON.length(); i++) {
+                    JSONObject detailsJSON = allRegionsJSON.getJSONObject(i);
+                    Integer id = detailsJSON.getInt("id");
+                    String name = detailsJSON.getString("name");
+
+                    regionNames.put(id, name);
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return regionNames;
+    }
+
+    public void getRegionName(final Integer id, final Location location) {
+        findRegions(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                HashMap<Integer, String> results = processRegionNames(response);
+                for (HashMap.Entry<Integer, String> pairs : results.entrySet()) {
+                    if (pairs.getKey() == id) {
+                        location.setUrlPath(pairs.getValue());
+                        Log.v("once", ""+location.getRegionName());
+                    }
+                }
+            }
+        });
+    }
+
     public static void findMachines(String name, Callback callback) {
         OkHttpClient client = new OkHttpClient.Builder().build();
         HttpUrl.Builder urlBuilder = HttpUrl.parse(Constants.MACHINES_REGION_URL).newBuilder();
@@ -185,57 +216,21 @@ public class PinballService {
         call.enqueue(callback);
     }
 
-    public static void findMachineNames(Callback callback) {
-        OkHttpClient client = new OkHttpClient.Builder().build();
-        String url = HttpUrl.parse(Constants.MACHINES_URL).toString();
-        Request request = new Request.Builder().url(url).build();
-        Call call = client.newCall(request);
-        call.enqueue(callback);
-    }
-
-    public HashMap<Integer, String> processMachineNames(Response response) {
-        HashMap<Integer, String> machineNames = new HashMap<>();
-        try {
-            String jsonData = response.body().string();
-            if (response.isSuccessful()) {
-                JSONObject machineNameJSON = new JSONObject(jsonData);
-                JSONArray machineNamesJSON = machineNameJSON.getJSONArray("machines");
-                for (int i = 0; i < machineNamesJSON.length(); i++) {
-                    JSONObject detailsJSON = machineNamesJSON.getJSONObject(i);
-                    Integer id = detailsJSON.getInt("id");
-                    String name = detailsJSON.getString("name");
-                    machineNames.put(id, name);
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return machineNames;
-    }
-
     public ArrayList<Machine> processMachines(Response response) {
         ArrayList<Machine> machines = new ArrayList<>();
 
         try {
             String jsonData = response.body().string();
             if (response.isSuccessful()) {
-                ArrayList<Integer> ids = new ArrayList<>();
                 JSONObject machineXrefJSON = new JSONObject(jsonData);
-
                 JSONArray machineXrefsJSON = machineXrefJSON.getJSONArray("location_machine_xrefs");
                 for (int i = 0; i < machineXrefsJSON.length(); i++) {
-                    Log.v("IDS", ""+ids);
                     JSONObject detailsJSON = machineXrefsJSON.getJSONObject(i);
                     Integer id = detailsJSON.getJSONObject("machine").getInt("id");
-                    ids.add(id);
-
                     String name = detailsJSON.getJSONObject("machine").getString("name");
                     Integer year = detailsJSON.getJSONObject("machine").getInt("year");
                     String manufacturer = detailsJSON.getJSONObject("machine").getString("manufacturer");
-                    Machine machine = new Machine(id, name, year, manufacturer);
+                    Machine machine = new Machine(1,id, name, year, manufacturer);
 
 
                     if(machines.isEmpty()){
@@ -265,19 +260,63 @@ public class PinballService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        Log.v("HEY", ""+machines);
-//        if(machinesFinal.isEmpty()){
-//
-//        }
-//        for(int i=0; i<machinesFinal.size()-1; i++){
-//            for(int j=0; j<machines.size(); j++){
-//                if(machinesFinal.get(i).getMachineId() != machines.get(j).getMachineId()){
-//                    machinesFinal.add(machines.get(j));
-//                }
-//                Log.v("MACH", ""+machinesFinal+"");
-//            }
-//        }
         return machines;
+    }
+
+    public ArrayList<Machine> processLocationMachines(Response response) {
+        ArrayList<Machine> machines = new ArrayList<>();
+
+        try {
+            String jsonData = response.body().string();
+
+            if (response.isSuccessful()) {
+                Log.v("logsdfgin", ""+machines);
+
+                JSONObject locationMachineJSON = new JSONObject(jsonData);
+                JSONArray locationMachinesJSON = locationMachineJSON.getJSONArray("location_machine_xrefs");
+                for (int i = 0; i < locationMachinesJSON.length(); i++) {
+                    JSONObject detailsJSON = locationMachinesJSON.getJSONObject(i);
+                    Integer id = detailsJSON.getJSONObject("machine").getInt("id");
+                    Integer locationId = detailsJSON.getJSONObject("location").getInt("id");
+                    String name = detailsJSON.getJSONObject("machine").getString("name");
+                    Integer year = detailsJSON.getJSONObject("machine").getInt("year");
+                    String manufacturer = detailsJSON.getJSONObject("machine").getString("manufacturer");
+                    Machine machine = new Machine(locationId, id, name, year, manufacturer);
+                    machines.add(machine);
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return machines;
+    }
+
+public void getLocationMachines(String name, final Location location){
+        final ArrayList<Machine> setMachines = new ArrayList<>();
+    Log.v("LOCATIONREGIONID", ""+location.getRegionName());
+        findMachines(name, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.v("REPSONSE", ""+response);
+                ArrayList<Machine> machines = processLocationMachines(response);
+                Log.v("capiche amigo", ""+machines);
+                for(int i=0; i<machines.size(); i++){
+                    if(machines.get(i).getLocationId() == location.getLocationId()){
+                        Log.v("added", "Add");
+                        setMachines.add(machines.get(i));
+                    }
+                }
+            }
+        });
+        location.setMachines(setMachines);
     }
 }
