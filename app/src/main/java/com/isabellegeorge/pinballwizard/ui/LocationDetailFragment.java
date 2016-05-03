@@ -36,7 +36,6 @@ public class LocationDetailFragment extends Fragment {
     @Bind(R.id.saveLocationButton) Button mSaveLocation;
     @Bind(R.id.addressFragment) TextView mAddressLocation;
     @Bind(R.id.locationMachines) ListView mMachines;
-    private ArrayList<String> machineNames = new ArrayList<>();
     private Location mLocation;
 
     public static LocationDetailFragment newInstance(Location location){
@@ -51,17 +50,13 @@ public class LocationDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         mLocation = Parcels.unwrap(getArguments().getParcelable("location"));
-
-
     }
 
 
     public void setMachinesForLocation(String name){
-
         final PinballService pinballService = new PinballService();
-
         final ArrayList<Machine> setMachines = new ArrayList<>();
-        pinballService.findMachines(name, new Callback() {
+        pinballService.findMachinesInRegion(name, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -69,7 +64,7 @@ public class LocationDetailFragment extends Fragment {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                ArrayList<Machine> machines = pinballService.processLocationMachines(response);
+                ArrayList<Machine> machines = pinballService.processMachinesInRegion(response);
                 for(int i=0; i<machines.size(); i++){
                     if(machines.get(i).getLocationId() == mLocation.getLocationId()){
                         setMachines.add(machines.get(i));
@@ -77,10 +72,7 @@ public class LocationDetailFragment extends Fragment {
                 }
                 final String[] machineNames = new String[setMachines.size()];
                 for(int i=0; i<machineNames.length; i++){
-                    Log.d("setMachines", ""+setMachines);
                     machineNames[i] = setMachines.get(i).getMachineName();
-                    Log.d("ya", ""+setMachines.get(i).getMachineName()
-                    );
                 }
                 getActivity().runOnUiThread(new Runnable() {
 
@@ -95,9 +87,7 @@ public class LocationDetailFragment extends Fragment {
 
     }
 
-    public LocationDetailFragment() {
-    }
-
+    public LocationDetailFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -111,5 +101,4 @@ public class LocationDetailFragment extends Fragment {
         mAddressLocation.setText(mLocation.getAddress() + " " + mLocation.getCity() + ", " + mLocation.getState() + " " + mLocation.getZip());
         return view;
     }
-
 }

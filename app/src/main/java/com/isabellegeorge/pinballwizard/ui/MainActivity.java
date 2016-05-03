@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
                 for (Region region: mRegions){
                     if(item.equals(region.getCity())){
                         Intent intent = new Intent(MainActivity.this, ResultsActivity.class);
-                        intent.putExtra("id", region.getId());
                         intent.putExtra("name", region.getUrlName());
                         intent.putExtra("city", item);
                         startActivity(intent);

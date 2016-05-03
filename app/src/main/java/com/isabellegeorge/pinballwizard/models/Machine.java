@@ -32,10 +32,6 @@ public class Machine {
         return id;
     }
 
-    public void setMachineName(String name){
-        this.name = name;
-    }
-
     public String getMachineName(){
         return name;
     }

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 @Parcel
 public class Location {
-    private int regionId;
     private int id;
     private String name;
     private String address;
@@ -19,13 +18,11 @@ public class Location {
     private String state;
     private String zip;
     private String locationType;
-    private String phone;
     private String urlPath;
     private ArrayList<Machine> machines = new ArrayList<>();
     private ArrayList<String> machineConditions;
 
-    public Location(int regionId, int id, String name, String address, String city, String state, String zip, String phone, ArrayList<Machine> machines, ArrayList<String> machineConditions){
-        this.regionId = regionId;
+    public Location(int id, String name, String address, String city, String state, String zip, ArrayList<Machine> machines, ArrayList<String> machineConditions){
         this.id = id;
         this.name = name;
         this.address = address;
@@ -33,7 +30,6 @@ public class Location {
         this.state = state;
         this.zip = zip;
         this.machines = machines;
-        this.phone = phone;
         this.machineConditions = machineConditions;
     }
 
@@ -84,14 +80,6 @@ public class Location {
             machineCount++;
         }
         return machineCount;
-    }
-
-    public ArrayList<Machine> getMachines(){
-        return machines;
-    }
-
-    public void setMachines(ArrayList<Machine> machines){
-        this.machines = machines;
     }
 
     public ArrayList<String> getMachineConditions(){
