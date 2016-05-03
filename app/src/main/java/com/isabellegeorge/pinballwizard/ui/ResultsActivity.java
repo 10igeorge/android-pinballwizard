@@ -76,6 +76,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
             @Override
             public void onResponse(Call call, Response response) {
                 locations = pinballService.processLocations(response);
+                pinballService.get
                 ResultsActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -88,29 +89,29 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         });
     }
 
-    private void getMachines(String name){
-        final PinballService pinballService = new PinballService();
-
-        pinballService.findMachines(name, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                machines = pinballService.processMachines(response);
-                ResultsActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        locationsRecycler.setAdapter(new MachinesListAdapter(getApplicationContext(), machines));
-                        locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
-                        locationsRecycler.setHasFixedSize(true);
-                    }
-                });
-            }
-        });
-    }
+//    private void getMachines(String name){
+//        final PinballService pinballService = new PinballService();
+//
+//        pinballService.findMachines(name, new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                machines = pinballService.processMachines(response);
+//                ResultsActivity.this.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        locationsRecycler.setAdapter(new MachinesListAdapter(getApplicationContext(), machines));
+//                        locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
+//                        locationsRecycler.setHasFixedSize(true);
+//                    }
+//                });
+//            }
+//        });
+//    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
@@ -119,7 +120,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         if(item.equals("Locations")){
             getLocations(name);
         } else {
-            getMachines(name);
+//            getMachines(name);
         }
     }
 
