@@ -2,6 +2,8 @@ package com.isabellegeorge.pinballwizard.ui;
 
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -29,7 +31,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class LocationDetailFragment extends Fragment {
+public class LocationDetailFragment extends Fragment implements View.OnClickListener {
     @Bind(R.id.locationTypeFragment) TextView mTypeLabel;
     @Bind(R.id.locationNameFragment) TextView mNameLabel;
 //    @Bind(R.id.numberMachineFragment) TextView mNumberMachines;
@@ -50,6 +52,23 @@ public class LocationDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         mLocation = Parcels.unwrap(getArguments().getParcelable("location"));
+    }
+
+
+    public LocationDetailFragment() {}
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setMachinesForLocation(mLocation.getUrlPath());
+
+        View view = inflater.inflate(R.layout.fragment_location_detail, container, false);
+        ButterKnife.bind(this, view);
+        mAddressLocation.setOnClickListener(this);
+        mNameLabel.setText(mLocation.getLocationName());
+        mTypeLabel.setText(mLocation.getLocationType());
+//        mNumberMachines.setText(mLocation.getNumberMachines()+" Machines");
+        mAddressLocation.setText(mLocation.getAddress() + " " + mLocation.getCity() + ", " + mLocation.getState() + " " + mLocation.getZip());
+        return view;
     }
 
 
@@ -84,21 +103,16 @@ public class LocationDetailFragment extends Fragment {
                 });
             }
         });
-
     }
 
-    public LocationDetailFragment() {}
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setMachinesForLocation(mLocation.getUrlPath());
-
-        View view = inflater.inflate(R.layout.fragment_location_detail, container, false);
-        ButterKnife.bind(this, view);
-        mNameLabel.setText(mLocation.getLocationName());
-        mTypeLabel.setText(mLocation.getLocationType());
-//        mNumberMachines.setText(mLocation.getNumberMachines()+" Machines");
-        mAddressLocation.setText(mLocation.getAddress() + " " + mLocation.getCity() + ", " + mLocation.getState() + " " + mLocation.getZip());
-        return view;
+    public void onClick(View v){
+        if(v==mAddressLocation){
+            Intent map = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("geo:" + mLocation.getLat()
+                            + "," + mLocation.getLong()
+                            + "?q=(" + mLocation.getLocationName() + ")"));
+            startActivity(map);
+        }
     }
 }

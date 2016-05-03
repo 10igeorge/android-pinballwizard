@@ -30,6 +30,8 @@ public class LocationsListAdapter extends RecyclerView.Adapter<LocationsListAdap
     public LocationsListAdapter(Context c, ArrayList<Location> locations){
         this.locations = locations;
         this.c = c;
+
+
     }
 
     @Override
@@ -77,4 +79,6 @@ public class LocationsListAdapter extends RecyclerView.Adapter<LocationsListAdap
 //            numberMachines.setText(location.getNumberMachines() + " Machines");
         }
     }
+
+
 }

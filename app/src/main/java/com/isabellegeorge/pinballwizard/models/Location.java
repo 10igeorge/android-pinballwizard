@@ -21,14 +21,17 @@ public class Location {
     private String urlPath;
     private ArrayList<Machine> machines = new ArrayList<>();
     private ArrayList<String> machineConditions;
+    private float lat, lon;
 
-    public Location(int id, String name, String address, String city, String state, String zip, ArrayList<Machine> machines, ArrayList<String> machineConditions){
+    public Location(int id, String name, String address, String city, String state, String zip, ArrayList<String> machineConditions, float lat, float lon){
         this.id = id;
         this.name = name;
         this.address = address;
         this.city = city;
         this.state = state;
         this.zip = zip;
+        this.lat = lat;
+        this.lon = lon;
         this.machines = machines;
         this.machineConditions = machineConditions;
     }
@@ -37,6 +40,13 @@ public class Location {
 
     public int getLocationId(){
         return id;
+    }
+
+    public float getLat(){
+        return lat;
+    }
+    public float getLong(){
+        return lon;
     }
 
     public void setUrlPath(String urlPath){

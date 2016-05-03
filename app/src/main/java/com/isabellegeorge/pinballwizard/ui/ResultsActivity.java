@@ -84,7 +84,8 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                 ResultsActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        locationsRecycler.setAdapter(new LocationsListAdapter(getApplicationContext(), locations));
+                        LocationsListAdapter adapter = new LocationsListAdapter(getApplicationContext(), locations);
+                        locationsRecycler.setAdapter(adapter);
                         locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
                         locationsRecycler.setHasFixedSize(true);
 
@@ -132,6 +133,7 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     public void onNothingSelected(AdapterView<?> arg0){
         //do nothing
     }
+
 }
 
 //TODO: assign fragment to FAB for upcoming events w/ Pinball API
