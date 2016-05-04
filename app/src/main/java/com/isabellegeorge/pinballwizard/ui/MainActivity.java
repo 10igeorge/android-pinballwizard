@@ -42,7 +42,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        getRegions();
+
+        if(mSharedPreferences.getString(Constants.PREFERENCES_REGION_KEY, null) != null){
+            startActivity(new Intent(this, ResultsActivity.class));
+        } else {
+            getRegions();
+        }
         regionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
