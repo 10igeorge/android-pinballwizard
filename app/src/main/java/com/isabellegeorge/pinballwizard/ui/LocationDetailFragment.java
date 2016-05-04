@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +67,7 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
         ButterKnife.bind(this, view);
         mAddressLocation.setOnClickListener(this);
         mSaveLocation.setOnClickListener(this);
-        mNameLabel.setText(mLocation.getLocationName());
+        mNameLabel.setText(mLocation.getName());
         mTypeLabel.setText(mLocation.getLocationType());
 //        mNumberMachines.setText(mLocation.getNumberMachines()+" Machines");
         mAddressLocation.setText(mLocation.getAddress() + " " + mLocation.getCity() + ", " + mLocation.getState() + " " + mLocation.getZip());
@@ -89,7 +88,7 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
             public void onResponse(Call call, Response response) throws IOException {
                 ArrayList<Machine> machines = pinballService.processMachinesInRegion(response);
                 for(int i=0; i<machines.size(); i++){
-                    if(machines.get(i).getLocationId() == mLocation.getLocationId()){
+                    if(machines.get(i).getLocationId() == mLocation.getId()){
                         setMachines.add(machines.get(i));
                     }
                 }
@@ -101,7 +100,7 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
 
                     @Override
                     public void run() {
-                        ArrayAdapter<String> machineAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, machineNames);
+                        ArrayAdapter<String> machineAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, machineNames);
                         mMachines.setAdapter(machineAdapter);
                     }
                 });
@@ -115,8 +114,8 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
             case (R.id.addressFragment):
                 Intent map = new Intent(Intent.ACTION_VIEW,
                         Uri.parse("geo:" + mLocation.getLat()
-                                + "," + mLocation.getLong()
-                                + "?q=(" + mLocation.getLocationName() + ")"));
+                                + "," + mLocation.getLon()
+                                + "?q=(" + mLocation.getName() + ")"));
                 startActivity(map);
                 break;
             case (R.id.saveLocationButton):

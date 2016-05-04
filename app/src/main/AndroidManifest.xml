@@ -26,7 +26,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
-        <activity android:name=".ui.LocationDetailActivity"></activity>
+        <activity android:name=".ui.LocationDetailActivity" />
+        <activity android:name=".ui.SavedLocationsActivity"></activity>
     </application>
 
 </manifest>

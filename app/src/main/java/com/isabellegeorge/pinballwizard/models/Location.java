@@ -20,11 +20,10 @@ public class Location {
     private String zip;
     private String locationType;
     private String urlPath;
-    private List<Machine> machines = new ArrayList<>();
     private ArrayList<String> machineConditions;
     private float lat, lon;
 
-    public Location(int id, String name, String address, String city, String state, String zip, ArrayList<String> machineConditions, float lat, float lon){
+    public Location(int id, String name, String address, String city, String state, String zip, ArrayList<String> machineConditions, float lat, float lon, String locationType){
         this.id = id;
         this.name = name;
         this.address = address;
@@ -33,20 +32,19 @@ public class Location {
         this.zip = zip;
         this.lat = lat;
         this.lon = lon;
-        this.machines = machines;
         this.machineConditions = machineConditions;
     }
 
     public Location() {}
 
-    public int getLocationId(){
+    public int getId(){
         return id;
     }
 
     public float getLat(){
         return lat;
     }
-    public float getLong(){
+    public float getLon(){
         return lon;
     }
 
@@ -58,7 +56,7 @@ public class Location {
         return urlPath;
     }
 
-    public String getLocationName(){
+    public String getName(){
         return name;
     }
 
@@ -85,13 +83,13 @@ public class Location {
         this.locationType = type;
     }
 
-    public int getNumberMachines(){
-        int machineCount=0;
-        for(int i=0; i<machines.size(); i++){
-            machineCount++;
-        }
-        return machineCount;
-    }
+//    public int getNumberMachines(){
+//        int machineCount=0;
+//        for(int i=0; i<machines.size(); i++){
+//            machineCount++;
+//        }
+//        return machineCount;
+//    }
 
     public ArrayList<String> getMachineConditions(){
         return machineConditions;

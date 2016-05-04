@@ -3,7 +3,6 @@ package com.isabellegeorge.pinballwizard.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
 import com.isabellegeorge.pinballwizard.models.Location;
 import com.isabellegeorge.pinballwizard.ui.LocationDetailFragment;
@@ -33,7 +32,7 @@ public class LocationPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position){
-        return mLocations.get(position).getLocationName();
+        return mLocations.get(position).getName();
     }
 }
 

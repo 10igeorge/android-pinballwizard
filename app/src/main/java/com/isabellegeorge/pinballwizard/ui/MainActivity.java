@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 
@@ -30,7 +31,8 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    @Bind(R.id.button) Button mButton;
     @Bind(R.id.regionList) ListView regionList;
     @Bind(R.id.rememberLocation) CheckBox mSaveRegion;
     private SharedPreferences mSharedPreferences;
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        mButton.setOnClickListener(this);
+
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         if(mSharedPreferences.getString(Constants.PREFERENCES_REGION_KEY, null) != null){
@@ -48,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             getRegions();
         }
+
         regionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -82,6 +88,13 @@ public class MainActivity extends AppCompatActivity {
 //        AlertDialog alert = alertDialogBuilder.create();
 //        alert.show();
 
+    }
+
+    public void onClick(View v){
+        if(v==mButton){
+            Intent i = new Intent(MainActivity.this, SavedLocationsActivity.class);
+            startActivity(i);
+        }
     }
 
     private void getRegions(){

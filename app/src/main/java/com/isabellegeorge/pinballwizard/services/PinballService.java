@@ -80,8 +80,8 @@ public class PinballService {
                     String name = detailsJSON.getString("name");
                     String address = detailsJSON.getString("street");
                     String city = detailsJSON.getString("city");
-                    float lat = detailsJSON.getLong("lat");
-                    float lon = detailsJSON.getLong("lon");
+                    float lat = Float.parseFloat(detailsJSON.getString("lat"));
+                    float lon = Float.parseFloat(detailsJSON.getString("lon"));
                     String state = detailsJSON.getString("state");
                     String zip = detailsJSON.getString("zip");
                     ArrayList<String> machineConditions = new ArrayList<>();
@@ -93,7 +93,7 @@ public class PinballService {
                         locationTypeId = 0;
                     }
 
-                    Location location = new Location(id, name, address, city, state, zip, machineConditions, lat, lon);
+                    Location location = new Location(id, name, address, city, state, zip, machineConditions, lat, lon, "");
                     locations.add(location);
                     setLocationType(locationTypeId, location);
                 }
