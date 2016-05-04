@@ -33,6 +33,4 @@ public class LocationDetailActivity extends AppCompatActivity {
         mViewPager.setAdapter(adapterViewPager);
         mViewPager.setCurrentItem(startingPosition);
     }
-
-
 }

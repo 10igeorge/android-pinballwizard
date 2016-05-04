@@ -14,7 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+import com.isabellegeorge.pinballwizard.Constants;
 import com.isabellegeorge.pinballwizard.R;
 import com.isabellegeorge.pinballwizard.models.Location;
 import com.isabellegeorge.pinballwizard.models.Machine;
@@ -64,6 +67,7 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
         View view = inflater.inflate(R.layout.fragment_location_detail, container, false);
         ButterKnife.bind(this, view);
         mAddressLocation.setOnClickListener(this);
+        mSaveLocation.setOnClickListener(this);
         mNameLabel.setText(mLocation.getLocationName());
         mTypeLabel.setText(mLocation.getLocationType());
 //        mNumberMachines.setText(mLocation.getNumberMachines()+" Machines");
@@ -107,12 +111,19 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View v){
-        if(v==mAddressLocation){
-            Intent map = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("geo:" + mLocation.getLat()
-                            + "," + mLocation.getLong()
-                            + "?q=(" + mLocation.getLocationName() + ")"));
-            startActivity(map);
+        switch(v.getId()) {
+            case (R.id.addressFragment):
+                Intent map = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("geo:" + mLocation.getLat()
+                                + "," + mLocation.getLong()
+                                + "?q=(" + mLocation.getLocationName() + ")"));
+                startActivity(map);
+                break;
+            case (R.id.saveLocationButton):
+                Firebase ref = new Firebase(Constants.FIREBASE_URL_LOCATIONS);
+                ref.push().setValue(mLocation);
+                Toast.makeText(getContext(), "Location saved", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }

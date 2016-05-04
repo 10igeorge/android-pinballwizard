@@ -4,6 +4,7 @@ import org.parceler.Parcel;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Epicodus on 4/29/16.
@@ -19,7 +20,7 @@ public class Location {
     private String zip;
     private String locationType;
     private String urlPath;
-    private ArrayList<Machine> machines = new ArrayList<>();
+    private List<Machine> machines = new ArrayList<>();
     private ArrayList<String> machineConditions;
     private float lat, lon;
 

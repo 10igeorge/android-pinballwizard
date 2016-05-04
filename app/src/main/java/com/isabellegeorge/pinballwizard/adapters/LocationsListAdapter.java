@@ -25,13 +25,10 @@ import butterknife.ButterKnife;
  */
 public class LocationsListAdapter extends RecyclerView.Adapter<LocationsListAdapter.LocationsViewHolder>{
     private ArrayList<Location> locations = new ArrayList<>();
-    private Context c;
-
+    Context c;
     public LocationsListAdapter(Context c, ArrayList<Location> locations){
         this.locations = locations;
         this.c = c;
-
-
     }
 
     @Override
@@ -49,7 +46,6 @@ public class LocationsListAdapter extends RecyclerView.Adapter<LocationsListAdap
     public int getItemCount(){
         return locations.size();
     }
-
 
     public class LocationsViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.locationName) TextView locationName;
@@ -76,7 +72,6 @@ public class LocationsListAdapter extends RecyclerView.Adapter<LocationsListAdap
          public void bindLocation(Location location){
             locationName.setText(location.getLocationName());
             locationType.setText(location.getLocationType());
-//            numberMachines.setText(location.getNumberMachines() + " Machines");
         }
     }
 

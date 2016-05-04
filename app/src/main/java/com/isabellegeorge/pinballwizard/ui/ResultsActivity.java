@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.isabellegeorge.pinballwizard.Constants;
+import com.isabellegeorge.pinballwizard.EndlessScrollListener;
 import com.isabellegeorge.pinballwizard.models.Location;
 import com.isabellegeorge.pinballwizard.models.Machine;
 import com.isabellegeorge.pinballwizard.services.PinballService;
@@ -45,12 +46,10 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     public ArrayList<Location> locations = new ArrayList<>();
     public ArrayList<Machine> machines = new ArrayList<>();
 
-
     String[] filters = new String[] {
             "Locations",
             "Machines"
         };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +69,6 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
 
         city = i.getStringExtra("city");
         name = i.getStringExtra("name");
-
     }
 
     private void getLocations(String city){
@@ -87,7 +85,11 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                 locations = pinballService.processLocations(response);
 
                 for(int i=0; i<locations.size(); i++){
-                    locations.get(i).setUrlPath(name);
+                    if(mRegion != null){
+                        locations.get(i).setUrlPath(mRegion);
+                    } else {
+                        locations.get(i).setUrlPath(name);
+                    }
                 }
 
                 ResultsActivity.this.runOnUiThread(new Runnable() {
@@ -95,9 +97,10 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
                     public void run() {
                         LocationsListAdapter adapter = new LocationsListAdapter(getApplicationContext(), locations);
                         locationsRecycler.setAdapter(adapter);
-                        locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
-                        locationsRecycler.setHasFixedSize(true);
 
+                        LinearLayoutManager layoutManager = new LinearLayoutManager(ResultsActivity.this);
+                        locationsRecycler.setLayoutManager(layoutManager);
+                        locationsRecycler.setHasFixedSize(true);
                     }
                 });
             }

@@ -10,4 +10,7 @@ public class Constants {
     public static final String LOCATION_TYPES_URL = "http://pinballmap.com/api/v1/location_types";
     public static final String PREFERENCES_REGION_KEY = "region";
     public static final String PREFERENCES_CITY_KEY = "city";
+    public static final String FIREBASE_URL = BuildConfig.FIREBASE_ROOT_URL;
+    public static final String FIREBASE_LOCATIONS = "locations";
+    public static final String FIREBASE_URL_LOCATIONS = FIREBASE_URL + "/" + FIREBASE_LOCATIONS;
 }

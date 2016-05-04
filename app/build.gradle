@@ -22,6 +22,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'FIREBASE_ROOT_URL', FirebaseRootUrl
+    }
 }
 
 repositories {
@@ -43,6 +46,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotaitons'
     }
     compile 'com.android.support:design:23.3.0'
+    compile 'com.firebase:firebase-client-android:2.3.1'
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'

@@ -84,7 +84,6 @@ public class PinballService {
                     float lon = detailsJSON.getLong("lon");
                     String state = detailsJSON.getString("state");
                     String zip = detailsJSON.getString("zip");
-//                    ArrayList<Machine> machines = new ArrayList<>();
                     ArrayList<String> machineConditions = new ArrayList<>();
 
                     int locationTypeId;
@@ -93,6 +92,7 @@ public class PinballService {
                     } else {
                         locationTypeId = 0;
                     }
+
                     Location location = new Location(id, name, address, city, state, zip, machineConditions, lat, lon);
                     locations.add(location);
                     setLocationType(locationTypeId, location);
