@@ -22,5 +22,18 @@
         android:id="@+id/regionList"
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="49dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remember my location"
+        android:id="@+id/rememberLocation"
+        android:scaleX="0.80"
+        android:scaleY="0.80"
+        android:textColor="#5A5A5A"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:checked="false" />
 </RelativeLayout>

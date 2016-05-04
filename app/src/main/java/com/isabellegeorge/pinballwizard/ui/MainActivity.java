@@ -2,15 +2,21 @@ package com.isabellegeorge.pinballwizard.ui;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 
+import com.isabellegeorge.pinballwizard.Constants;
 import com.isabellegeorge.pinballwizard.services.PinballService;
 import com.isabellegeorge.pinballwizard.R;
 import com.isabellegeorge.pinballwizard.models.Region;
@@ -26,6 +32,8 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     @Bind(R.id.regionList) ListView regionList;
+    @Bind(R.id.rememberLocation) CheckBox mSaveRegion;
+    private SharedPreferences mSharedPreferences;
     public ArrayList<Region> mRegions = new ArrayList<>();
 
     @Override
@@ -33,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         getRegions();
         regionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -41,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
                 for (Region region: mRegions){
                     if(item.equals(region.getCity())){
                         Intent intent = new Intent(MainActivity.this, ResultsActivity.class);
+                        if(mSaveRegion.isChecked()){
+                            mSharedPreferences.edit().putString(Constants.PREFERENCES_REGION_KEY, region.getUrlName()).apply();
+                            mSharedPreferences.edit().putString(Constants.PREFERENCES_CITY_KEY, region.getCity()).apply();
+                        }
                         intent.putExtra("name", region.getUrlName());
                         intent.putExtra("city", item);
                         startActivity(intent);
@@ -49,18 +62,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LayoutInflater inflater = getLayoutInflater();
-        View text = inflater.inflate(R.layout.instructions_toast, null);
-        //TODO option for do not show again
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this)
-            .setView(text)
-            .setPositiveButton("OK", new
-                DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface instructions_toast, int BUTTON_POSITIVE) {
-                    }
-                });
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
+//        LayoutInflater inflater = getLayoutInflater();
+//        View text = inflater.inflate(R.layout.instructions_toast, null);
+//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this)
+//            .setView(text)
+//            .setPositiveButton("OK", new
+//                DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface instructions_toast, int BUTTON_POSITIVE) {
+//                        if(checkBox.isChecked()){
+//                            mSharedPreferences.edit().putBoolean("noShow", true);
+//                        }
+//                    }
+//                });
+//        AlertDialog alert = alertDialogBuilder.create();
+//        alert.show();
+
     }
 
     private void getRegions(){

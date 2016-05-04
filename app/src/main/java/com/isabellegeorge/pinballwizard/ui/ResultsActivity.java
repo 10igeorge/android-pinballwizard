@@ -1,10 +1,13 @@
 package com.isabellegeorge.pinballwizard.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.isabellegeorge.pinballwizard.Constants;
 import com.isabellegeorge.pinballwizard.models.Location;
 import com.isabellegeorge.pinballwizard.models.Machine;
 import com.isabellegeorge.pinballwizard.services.PinballService;
@@ -35,6 +39,9 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     @Bind(R.id.filterSpinner) Spinner mFilter;
     @Bind(R.id.locationsWithPinball) RecyclerView locationsRecycler;
     private String name;
+    private String city;
+    private SharedPreferences mSharedPreferences;
+    private String mRegion;
     public ArrayList<Location> locations = new ArrayList<>();
     public ArrayList<Machine> machines = new ArrayList<>();
 
@@ -57,11 +64,13 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerFilters);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mFilter.setAdapter(spinnerAdapter);
-
         Intent i = getIntent();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mRegion = mSharedPreferences.getString(Constants.PREFERENCES_REGION_KEY, null);
+
+        city = i.getStringExtra("city");
         name = i.getStringExtra("name");
-        String city = i.getStringExtra("city");
-        mResultsTextView.setText("Pinball near " + city);
+
     }
 
     private void getLocations(String city){
@@ -124,7 +133,13 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
         String item = parent.getItemAtPosition(position).toString();
         Toast.makeText(parent.getContext(), "Filtering by " + item.toLowerCase(), Toast.LENGTH_LONG).show();
         if(item.equals("Locations")){
-            getLocations(name);
+            if(mRegion != null) {
+                mResultsTextView.setText("Pinball near " + mSharedPreferences.getString(Constants.PREFERENCES_CITY_KEY, null));
+                getLocations(mRegion);
+            } else {
+                mResultsTextView.setText("Pinball near " + city);
+                getLocations(name);
+            }
         } else {
             getMachines(name);
         }
