@@ -1,5 +1,6 @@
 package com.isabellegeorge.pinballwizard.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -36,7 +38,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class ResultsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class ResultsActivity extends NavDrawerActivity implements AdapterView.OnItemSelectedListener {
     @Bind(R.id.resultsTextView) TextView mResultsTextView;
     @Bind(R.id.filterSpinner) Spinner mFilter;
     @Bind(R.id.locationsWithPinball) RecyclerView locationsRecycler;
@@ -55,9 +57,12 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_results);
+        LayoutInflater inflater = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.activity_results
+                , null, false);
+        drawer.addView(contentView, 0);
         ButterKnife.bind(this);
-
 
         mFilter.setOnItemSelectedListener(ResultsActivity.this);
 
@@ -155,5 +160,3 @@ public class ResultsActivity extends AppCompatActivity implements AdapterView.On
     }
 
 }
-
-//TODO: assign fragment to FAB for upcoming events w/ Pinball API

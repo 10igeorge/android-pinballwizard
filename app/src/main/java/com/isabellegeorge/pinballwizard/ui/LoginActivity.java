@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         if(password.equals("")){
-            mPassword.setText("Password cannot be blank");
+            mEmail.setText("Password cannot be blank");
         }
 
         ref.authWithPassword(email, password, new Firebase.AuthResultHandler() {

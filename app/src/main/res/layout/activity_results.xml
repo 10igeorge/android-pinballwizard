@@ -15,9 +15,10 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/resultsTextView"
+        android:text="Pinball"
+        android:layout_marginTop="72dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp" />
+        android:layout_centerHorizontal="true" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
@@ -34,15 +35,5 @@
         android:layout_marginTop="20dp"
         android:layout_below="@+id/resultsTextView"
         android:layout_centerHorizontal="true" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/myFAB"
-        android:padding="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_events"/>
 
 </RelativeLayout>
