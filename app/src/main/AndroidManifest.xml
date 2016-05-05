@@ -28,7 +28,8 @@
         </activity>
         <activity android:name=".ui.LocationDetailActivity" />
         <activity android:name=".ui.SavedLocationsActivity" />
-        <activity android:name=".ui.SignUpActivity"></activity>
+        <activity android:name=".ui.SignUpActivity" />
+        <activity android:name=".ui.LoginActivity"></activity>
     </application>
 
 </manifest>

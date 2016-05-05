@@ -7,12 +7,12 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.isabellegeorge.pinballwizard.ui.SignUpActivity">
+    tools:context="com.isabellegeorge.pinballwizard.ui.LoginActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create an account"
+        android:text="Login"
         android:id="@+id/textView4"
         android:textStyle="bold"
         android:textSize="30sp"
@@ -22,7 +22,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:paddingTop="35dp"
-        android:paddingBottom="35dp"/>
+        android:paddingBottom="35dp"
+        android:background="@color/white"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -30,7 +31,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:paddingLeft="10dp"
-        android:paddingTop="20dp"
+        android:paddingTop="30dp"
         android:paddingRight="10dp"
         android:paddingBottom="50dp"
         android:layout_alignParentLeft="true"
@@ -39,23 +40,14 @@
         android:layout_below="@+id/textView4">
 
         <EditText
-            android:id="@+id/nameEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:hint="Name"
-            android:textColorHint="@color/colorPrimary"
-            android:layout_marginTop="20dp"
-            android:textSize="15sp"/>
-
-        <EditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="Email"
             android:textColorHint="@color/colorPrimary"
-            android:textSize="15sp"/>
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"/>
 
         <EditText
             android:id="@+id/passwordEditText"
@@ -65,37 +57,27 @@
             android:padding="10dp"
             android:hint="Password"
             android:textColorHint="@color/colorPrimary"
-            android:textSize="15sp"/>
-
-        <EditText
-            android:id="@+id/confirmPasswordEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:padding="10dp"
-            android:hint="Confirm password"
-            android:textColorHint="@color/colorPrimary"
-            android:textSize="15sp"/>
+            android:textSize="20sp"/>
 
         <Button
-            android:id="@+id/createUserButton"
+            android:id="@+id/passwordLoginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="Sign up"
+            android:padding="15dp"
+            android:text="Log in"
             android:background="@color/colorAccent"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:textColor="@color/white" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold"
             android:textSize="15sp"
-            android:text="Already have an account? Log in here!"
-            android:id="@+id/loginTextView"
+            android:text="Don't have an account? Sign up here!"
+            android:id="@+id/registerTextView"
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
