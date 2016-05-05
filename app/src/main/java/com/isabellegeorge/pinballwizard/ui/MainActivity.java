@@ -31,8 +31,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    @Bind(R.id.button) Button mButton;
+public class MainActivity extends AppCompatActivity {
     @Bind(R.id.regionList) ListView regionList;
     @Bind(R.id.rememberLocation) CheckBox mSaveRegion;
     private SharedPreferences mSharedPreferences;
@@ -44,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mButton.setOnClickListener(this);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -61,13 +59,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 for (Region region: mRegions){
                     if(item.equals(region.getCity())){
                         Intent intent = new Intent(MainActivity.this, ResultsActivity.class);
-                        if(mSaveRegion.isChecked()){
-                            mSharedPreferences.edit().putString(Constants.PREFERENCES_REGION_KEY, region.getUrlName()).apply();
-                            mSharedPreferences.edit().putString(Constants.PREFERENCES_CITY_KEY, region.getCity()).apply();
-                        }
                         intent.putExtra("name", region.getUrlName());
                         intent.putExtra("city", item);
                         startActivity(intent);
+                        if(mSaveRegion.isChecked()){
+                            mSharedPreferences.edit().putString(Constants.PREFERENCES_REGION_KEY, region.getUrlName()).apply();
+                            mSharedPreferences.edit().putString(Constants.PREFERENCES_CITY_KEY, region.getCity()).apply();
+                            finish();
+                        }
                     }
                 }
             }
@@ -88,13 +87,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        AlertDialog alert = alertDialogBuilder.create();
 //        alert.show();
 
-    }
-
-    public void onClick(View v){
-        if(v==mButton){
-            Intent i = new Intent(MainActivity.this, SavedLocationsActivity.class);
-            startActivity(i);
-        }
     }
 
     private void getRegions(){

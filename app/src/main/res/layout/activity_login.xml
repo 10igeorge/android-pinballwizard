@@ -22,14 +22,12 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:paddingTop="35dp"
-        android:paddingBottom="35dp"
-        android:background="@color/white"/>
+        android:paddingBottom="35dp"/>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:paddingLeft="10dp"
         android:paddingTop="30dp"
         android:paddingRight="10dp"
@@ -79,6 +77,18 @@
             android:text="Don't have an account? Sign up here!"
             android:id="@+id/registerTextView"
             android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:text="Continue without account"
+            android:id="@+id/continueWithoutAccount"
+            android:layout_gravity="center_horizontal" />
+
 
     </LinearLayout>
 
