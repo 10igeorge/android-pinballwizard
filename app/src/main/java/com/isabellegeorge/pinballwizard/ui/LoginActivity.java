@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Bind(R.id.emailEditText) EditText mEmail;
     @Bind(R.id.passwordEditText) EditText mPassword;
     @Bind(R.id.passwordLoginButton) Button mLogin;
+    private boolean canLogIn;
     private Firebase ref;
     private SharedPreferences mSharedPref;
 
@@ -43,12 +44,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v){
         switch(v.getId()){
-            case(R.id.passwordLoginButton):
+            case R.id.passwordLoginButton:
                 loginWithPassword();
-            case(R.id.registerTextView):
+                break;
+            case R.id.registerTextView:
                 Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(i);
                 finish();
+                break;
+            default:
                 break;
         }
     }
@@ -78,20 +82,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
 
             @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                switch(firebaseError.getCode()){
+            public void onAuthenticationError(FirebaseError e) {
+                switch(e.getCode()){
                     case FirebaseError.INVALID_EMAIL:
                     case FirebaseError.USER_DOES_NOT_EXIST:
                         mEmail.setError("This email has not been registered");
                         break;
                     case FirebaseError.INVALID_PASSWORD:
-                        mPassword.setError(firebaseError.getMessage());
+                        mEmail.setError(e.getMessage());
                         break;
                     case FirebaseError.NETWORK_ERROR:
                         showErrorToast("There was a problem with the network connection");
                         break;
                     default:
-                        showErrorToast(firebaseError.toString());
+                        showErrorToast(e.toString());
 
                 }
             }

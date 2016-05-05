@@ -1,5 +1,7 @@
 package com.isabellegeorge.pinballwizard.ui;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,7 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.isabellegeorge.pinballwizard.Constants;
@@ -27,6 +31,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     @Bind(R.id.confirmPasswordEditText) EditText mConfirmPassword;
     @Bind(R.id.loginTextView) TextView mLogin;
     private Firebase ref;
+    private SharedPreferences mSharedPref;
 
 
     @Override
@@ -55,6 +60,38 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             public void onSuccess(Map<String, Object> result){
                 String uid = result.get("uid").toString();
                 saveUserInFirebase(name, email, uid);
+
+                ref.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+                    @Override
+                    public void onAuthenticated(AuthData authData) {
+                        if(authData != null){
+                            String uid = authData.getUid();
+                            mSharedPref.edit().putString(Constants.KEY_UID, uid).apply();
+                            Intent i = new Intent(SignUpActivity.this, MainActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onAuthenticationError(FirebaseError e) {
+                        switch(e.getCode()){
+                            case FirebaseError.INVALID_EMAIL:
+                            case FirebaseError.USER_DOES_NOT_EXIST:
+                                mEmail.setError("This email has not been registered");
+                                break;
+                            case FirebaseError.INVALID_PASSWORD:
+                                mPassword.setError(e.getMessage());
+                                break;
+                            case FirebaseError.NETWORK_ERROR:
+                                showErrorToast("There was a problem with the network connection");
+                                break;
+                            default:
+                                showErrorToast(e.toString());
+                        }
+                    }
+                });
             }
 
             @Override
@@ -68,5 +105,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         final Firebase userLocation = new Firebase(Constants.FIREBASE_URL_USERS).child(uid);
         User newUser = new User(name, email);
         userLocation.setValue(newUser);
+    }
+
+    private void showErrorToast(String message){
+        Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_LONG).show();
     }
 }
