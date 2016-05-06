@@ -2,6 +2,7 @@ package com.isabellegeorge.pinballwizard.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +41,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_sign_up);
         ButterKnife.bind(this);
         ref = new Firebase(Constants.FIREBASE_URL);
+        mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         mNewUser.setOnClickListener(this);
     }
 

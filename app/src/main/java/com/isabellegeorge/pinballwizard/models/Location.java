@@ -13,15 +13,10 @@ import java.util.List;
 @Parcel
 public class Location {
     private int id;
-    private String name;
-    private String address;
-    private String city;
-    private String state;
-    private String zip;
-    private String locationType;
-    private String urlPath;
+    private String name, address, city, state, zip, locationType, urlPath;
     private ArrayList<String> machineConditions;
     private float lat, lon;
+    private String pushId;
 
     public Location(int id, String name, String address, String city, String state, String zip, ArrayList<String> machineConditions, float lat, float lon, String locationType){
         this.id = id;
@@ -39,6 +34,14 @@ public class Location {
 
     public int getId(){
         return id;
+    }
+
+    public String getPushId() {
+        return pushId;
+    }
+
+    public void setPushId(String pushId) {
+        this.pushId = pushId;
     }
 
     public float getLat(){
@@ -82,14 +85,6 @@ public class Location {
     public void setLocationType(String type){
         this.locationType = type;
     }
-
-//    public int getNumberMachines(){
-//        int machineCount=0;
-//        for(int i=0; i<machines.size(); i++){
-//            machineCount++;
-//        }
-//        return machineCount;
-//    }
 
     public ArrayList<String> getMachineConditions(){
         return machineConditions;

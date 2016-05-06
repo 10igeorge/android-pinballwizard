@@ -3,8 +3,10 @@ package com.isabellegeorge.pinballwizard.ui;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,11 +38,12 @@ import okhttp3.Response;
 public class LocationDetailFragment extends Fragment implements View.OnClickListener {
     @Bind(R.id.locationTypeFragment) TextView mTypeLabel;
     @Bind(R.id.locationNameFragment) TextView mNameLabel;
-//    @Bind(R.id.numberMachineFragment) TextView mNumberMachines;
     @Bind(R.id.saveLocationButton) Button mSaveLocation;
     @Bind(R.id.addressFragment) TextView mAddressLocation;
     @Bind(R.id.locationMachines) ListView mMachines;
+    private int machineCount = 0;
     private Location mLocation;
+    private SharedPreferences mSharedPref;
 
     public static LocationDetailFragment newInstance(Location location){
         LocationDetailFragment locationDetailFragment = new LocationDetailFragment();
@@ -54,6 +57,7 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         mLocation = Parcels.unwrap(getArguments().getParcelable("location"));
+        mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
 
@@ -69,11 +73,9 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
         mSaveLocation.setOnClickListener(this);
         mNameLabel.setText(mLocation.getName());
         mTypeLabel.setText(mLocation.getLocationType());
-//        mNumberMachines.setText(mLocation.getNumberMachines()+" Machines");
         mAddressLocation.setText(mLocation.getAddress() + " " + mLocation.getCity() + ", " + mLocation.getState() + " " + mLocation.getZip());
         return view;
     }
-
 
     public void setMachinesForLocation(String name){
         final PinballService pinballService = new PinballService();
@@ -90,6 +92,7 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
                 for(int i=0; i<machines.size(); i++){
                     if(machines.get(i).getLocationId() == mLocation.getId()){
                         setMachines.add(machines.get(i));
+                        machineCount ++;
                     }
                 }
                 final String[] machineNames = new String[setMachines.size()];
@@ -119,8 +122,12 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
                 startActivity(map);
                 break;
             case (R.id.saveLocationButton):
-                Firebase ref = new Firebase(Constants.FIREBASE_URL_LOCATIONS);
-                ref.push().setValue(mLocation);
+                String uid = mSharedPref.getString(Constants.KEY_UID, null);
+
+                Firebase ref = new Firebase(Constants.FIREBASE_URL_LOCATIONS).child(uid);
+                Firebase pushRef = ref.push();
+                mLocation.setPushId(pushRef.getKey());
+                pushRef.setValue(mLocation);
                 Toast.makeText(getContext(), "Location saved", Toast.LENGTH_SHORT).show();
                 break;
         }

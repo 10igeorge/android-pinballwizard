@@ -31,16 +31,6 @@
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="# Machines"-->
-                <!--android:id="@+id/numberMachineFragment"-->
-                <!--android:textColor="@color/colorAccent"-->
-                <!--android:textStyle="bold"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_alignParentBottom="true" />-->
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

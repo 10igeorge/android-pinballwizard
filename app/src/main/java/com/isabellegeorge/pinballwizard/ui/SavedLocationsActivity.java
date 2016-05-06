@@ -1,49 +1,24 @@
 package com.isabellegeorge.pinballwizard.ui;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
-import com.firebase.client.Firebase;
-import com.firebase.client.Query;
-import com.isabellegeorge.pinballwizard.Constants;
 import com.isabellegeorge.pinballwizard.R;
-import com.isabellegeorge.pinballwizard.adapters.FirebaseLocationsListAdapter;
-import com.isabellegeorge.pinballwizard.models.Location;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
-/**
- * Created by Guest on 5/4/16.
- */
 public class SavedLocationsActivity extends AppCompatActivity {
-    private Query mQuery;
-    private Firebase ref;
-    private FirebaseLocationsListAdapter mAdapter;
-    @Bind(R.id.locationsWithPinball) RecyclerView mRecyclerView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_results);
-        ButterKnife.bind(this);
+        setContentView(R.layout.activity_saved_locations);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        ref = new Firebase(Constants.FIREBASE_URL_LOCATIONS);
-
-        setUpFirebaseQuery();
-        setUpRecyclerView();
+        getFragmentManager().beginTransaction().replace(R.id.savedLocations, new SavedLocationsFragment()).commit();
     }
 
-    private void setUpFirebaseQuery(){
-        String location = ref.toString();
-        mQuery = new Firebase(location);
-    }
-
-    private void setUpRecyclerView(){
-        mAdapter = new FirebaseLocationsListAdapter(mQuery, Location.class);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mAdapter);
-    }
 }
