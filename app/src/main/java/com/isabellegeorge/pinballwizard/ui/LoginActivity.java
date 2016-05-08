@@ -1,5 +1,6 @@
 package com.isabellegeorge.pinballwizard.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean canLogIn;
     private Firebase ref;
     private SharedPreferences mSharedPref;
+    private ProgressDialog mAuthProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
         ref = new Firebase(Constants.FIREBASE_URL);
+
+        mAuthProgressDialog = new ProgressDialog(this);
+        mAuthProgressDialog.setTitle("Loading...");
+        mAuthProgressDialog.setMessage("Authenticating...");
+        mAuthProgressDialog.setCancelable(false);
     }
 
     @Override
@@ -65,12 +72,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         if(password.equals("")){
-            mEmail.setText("Password cannot be blank");
+            mEmail.setError("Password cannot be blank");
         }
+
+        mAuthProgressDialog.show();
 
         ref.authWithPassword(email, password, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
+                mAuthProgressDialog.dismiss();
+
                 if(authData != null){
                     String uid = authData.getUid();
                     mSharedPref.edit().putString(Constants.KEY_UID, uid).apply();
@@ -83,6 +94,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onAuthenticationError(FirebaseError e) {
+                mAuthProgressDialog.dismiss();
+
                 switch(e.getCode()){
                     case FirebaseError.INVALID_EMAIL:
                     case FirebaseError.USER_DOES_NOT_EXIST:

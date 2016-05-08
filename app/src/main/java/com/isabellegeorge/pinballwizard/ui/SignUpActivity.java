@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,6 +58,22 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         final String email = mEmail.getText().toString();
         final String password = mPassword.getText().toString();
         final String confirmPassword = mConfirmPassword.getText().toString();
+
+        if(!(email != null && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())){
+            mEmail.setError("Please enter a valid email address");
+        }
+
+        if(name.equals("")){
+            mName.setError("Please enter a username");
+        }
+
+        if(password.length() < 8){
+            mPassword.setError("Password must contain a minimum of 8 characters");
+        } else if (!password.equals(confirmPassword)){
+            mPassword.setError("Passwords do not match");
+        }
+
+
         ref.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result){

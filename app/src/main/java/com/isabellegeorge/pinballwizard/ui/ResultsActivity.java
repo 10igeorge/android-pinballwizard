@@ -57,25 +57,26 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         LayoutInflater inflater = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.activity_results
-                , null, false);
+        View contentView = inflater.inflate(R.layout.activity_results, null, false);
         drawer.addView(contentView, 0);
+
         ButterKnife.bind(this);
 
         mFilter.setOnItemSelectedListener(ResultsActivity.this);
-
         List<String> spinnerFilters = new ArrayList<>(Arrays.asList(filters));
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerFilters);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mFilter.setAdapter(spinnerAdapter);
-        Intent i = getIntent();
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mRegion = mSharedPreferences.getString(Constants.PREFERENCES_REGION_KEY, null);
 
+        Intent i = getIntent();
         city = i.getStringExtra("city");
         name = i.getStringExtra("name");
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mRegion = mSharedPreferences.getString(Constants.PREFERENCES_REGION_KEY, null);
     }
 
     private void getLocations(String city){
