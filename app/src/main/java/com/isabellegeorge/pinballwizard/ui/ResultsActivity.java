@@ -31,6 +31,9 @@ import com.isabellegeorge.pinballwizard.adapters.MachinesListAdapter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -132,10 +135,19 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+
                 machines = pinballService.processMachinesInRegion(response);
+
                 ResultsActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        Collections.sort(machines, new Comparator<Machine>() {
+                            @Override
+                            public int compare(Machine machine, Machine t1) {
+                                 return machine.getMachineName().compareTo(t1.getMachineName());
+                            }
+                        });
+
                         locationsRecycler.setAdapter(new MachinesListAdapter(getApplicationContext(), machines));
                         locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
                         locationsRecycler.setHasFixedSize(true);

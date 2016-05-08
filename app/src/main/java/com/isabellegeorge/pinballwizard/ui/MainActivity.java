@@ -27,6 +27,9 @@ import com.isabellegeorge.pinballwizard.models.Region;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -77,22 +80,6 @@ public class MainActivity extends NavDrawerActivity {
                 }
             }
         });
-
-//        LayoutInflater inflater = getLayoutInflater();
-//        View text = inflater.inflate(R.layout.instructions_toast, null);
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this)
-//            .setView(text)
-//            .setPositiveButton("OK", new
-//                DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface instructions_toast, int BUTTON_POSITIVE) {
-//                        if(checkBox.isChecked()){
-//                            mSharedPreferences.edit().putBoolean("noShow", true);
-//                        }
-//                    }
-//                });
-//        AlertDialog alert = alertDialogBuilder.create();
-//        alert.show();
-
     }
 
     private void getRegions(){
@@ -115,6 +102,8 @@ public class MainActivity extends NavDrawerActivity {
                         for(int i=0; i<regionNames.length; i++){
                             regionNames[i] = mRegions.get(i).getCity();
                         }
+
+                        Arrays.sort(regionNames);
                         ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, regionNames);
                         regionList.setAdapter(adapter);
                     }

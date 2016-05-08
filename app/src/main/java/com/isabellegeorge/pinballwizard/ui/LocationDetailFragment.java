@@ -91,19 +91,21 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                final String[] machineNames = new String[setMachines.size()];
                 ArrayList<Machine> machines = pinballService.processMachinesInRegion(response);
+
                 for(int i=0; i<machines.size(); i++){
                     if(machines.get(i).getLocationId() == mLocation.getId()){
                         setMachines.add(machines.get(i));
                         machineCount ++;
                     }
                 }
-                final String[] machineNames = new String[setMachines.size()];
+
                 for(int i=0; i<machineNames.length; i++){
                     machineNames[i] = setMachines.get(i).getMachineName();
                 }
-                getActivity().runOnUiThread(new Runnable() {
 
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if(machineNames.length < 1){
