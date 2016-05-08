@@ -32,10 +32,10 @@
         android:paddingTop="30dp"
         android:paddingRight="10dp"
         android:paddingBottom="50dp"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/textView4">
+        android:layout_marginBottom="27dp">
 
         <EditText
             android:id="@+id/emailEditText"
@@ -57,6 +57,14 @@
             android:textColorHint="@color/colorPrimary"
             android:textSize="20sp"/>
 
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remember me"
+            android:layout_marginTop="10dp"
+            android:id="@+id/rememberLogin"
+            android:checked="false" />
+
         <Button
             android:id="@+id/passwordLoginButton"
             android:layout_width="match_parent"
@@ -64,7 +72,7 @@
             android:padding="15dp"
             android:text="Log in"
             android:background="@color/colorAccent"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:textColor="@color/white" />
 
         <TextView

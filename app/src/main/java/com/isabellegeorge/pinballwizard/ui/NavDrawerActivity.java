@@ -1,14 +1,11 @@
 package com.isabellegeorge.pinballwizard.ui;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.app.FragmentManager;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,14 +25,11 @@ import com.isabellegeorge.pinballwizard.Constants;
 import com.isabellegeorge.pinballwizard.R;
 import com.isabellegeorge.pinballwizard.models.User;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 public class NavDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
         protected DrawerLayout drawer;
         private Firebase ref;
-        private SharedPreferences mSharedPreferences;
+        private SharedPreferences mSharedPref;
         private TextView username;
 
     @Override
@@ -46,8 +40,8 @@ public class NavDrawerActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ref = new Firebase(Constants.FIREBASE_URL_USERS);
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String uid = mSharedPreferences.getString(Constants.KEY_UID, null);
+        mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String uid = mSharedPref.getString(Constants.KEY_UID, null);
         ref = new Firebase(Constants.FIREBASE_URL_USERS + "/" + uid);
 
 
@@ -140,6 +134,7 @@ public class NavDrawerActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_logout) {
             ref.unauth();
+            mSharedPref.edit().putBoolean("Remember User", false).apply();
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();

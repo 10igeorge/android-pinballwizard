@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Bind(R.id.emailEditText) EditText mEmail;
     @Bind(R.id.passwordEditText) EditText mPassword;
     @Bind(R.id.passwordLoginButton) Button mLogin;
+    @Bind(R.id.rememberLogin) CheckBox mRememberLogin;
     private boolean canLogIn;
     private Firebase ref;
     private SharedPreferences mSharedPref;
@@ -65,8 +67,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void loginWithPassword(){
-        String email = mEmail.getText().toString();
-        String password = mPassword.getText().toString();
+        final String email = mEmail.getText().toString();
+        final String password = mPassword.getText().toString();
         if(email.equals("")){
             mEmail.setError("Please enter a valid email address");
         }
@@ -81,6 +83,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onAuthenticated(AuthData authData) {
                 mAuthProgressDialog.dismiss();
+
+                if(mRememberLogin.isChecked()){
+                    mSharedPref.edit().putBoolean("Remember User", true).apply();
+                    mSharedPref.edit().putString(Constants.KEY_USER_EMAIL, email).apply();
+                    mSharedPref.edit().putString(Constants.KEY_USER_PASSWORD, password).apply();
+                }
 
                 if(authData != null){
                     String uid = authData.getUid();
