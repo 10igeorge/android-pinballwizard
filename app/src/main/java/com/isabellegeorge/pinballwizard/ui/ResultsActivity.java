@@ -1,5 +1,6 @@
 package com.isabellegeorge.pinballwizard.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -42,10 +43,9 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
     @Bind(R.id.resultsTextView) TextView mResultsTextView;
     @Bind(R.id.filterSpinner) Spinner mFilter;
     @Bind(R.id.locationsWithPinball) RecyclerView locationsRecycler;
-    private String name;
-    private String city;
+    private String name, city, mRegion;
     private SharedPreferences mSharedPreferences;
-    private String mRegion;
+    private ProgressDialog loadingResults;
     public ArrayList<Location> locations = new ArrayList<>();
     public ArrayList<Machine> machines = new ArrayList<>();
 
@@ -57,6 +57,8 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
         LayoutInflater inflater = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -80,6 +82,8 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
     }
 
     private void getLocations(String city){
+        loadingResults.show();
+
         final PinballService pinballService = new PinballService();
 
         pinballService.findLocations(city, new Callback() {
@@ -105,10 +109,10 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
                     public void run() {
                         LocationsListAdapter adapter = new LocationsListAdapter(getApplicationContext(), locations);
                         locationsRecycler.setAdapter(adapter);
-
                         LinearLayoutManager layoutManager = new LinearLayoutManager(ResultsActivity.this);
                         locationsRecycler.setLayoutManager(layoutManager);
                         locationsRecycler.setHasFixedSize(true);
+                        loadingResults.dismiss();
                     }
                 });
             }
@@ -116,6 +120,8 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
     }
 
     private void getMachines(String name){
+        loadingResults.show();
+
         final PinballService pinballService = new PinballService();
 
         pinballService.findMachinesInRegion(name, new Callback() {
@@ -133,6 +139,7 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
                         locationsRecycler.setAdapter(new MachinesListAdapter(getApplicationContext(), machines));
                         locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
                         locationsRecycler.setHasFixedSize(true);
+                        loadingResults.dismiss();
                     }
                 });
             }
@@ -144,6 +151,10 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
         String item = parent.getItemAtPosition(position).toString();
         Toast.makeText(parent.getContext(), "Filtering by " + item.toLowerCase(), Toast.LENGTH_LONG).show();
         if(item.equals("Locations")){
+            loadingResults = new ProgressDialog(this);
+            loadingResults.setTitle("Loading...");
+            loadingResults.setMessage("Finding locations in your region...");
+            loadingResults.setCancelable(false);
             if(mRegion != null) {
                 mResultsTextView.setText("Pinball near " + mSharedPreferences.getString(Constants.PREFERENCES_CITY_KEY, null));
                 getLocations(mRegion);
@@ -152,6 +163,10 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
                 getLocations(name);
             }
         } else {
+            loadingResults = new ProgressDialog(this);
+            loadingResults.setTitle("Loading...");
+            loadingResults.setMessage("Finding machines in your region...");
+            loadingResults.setCancelable(false);
             getMachines(name);
         }
     }

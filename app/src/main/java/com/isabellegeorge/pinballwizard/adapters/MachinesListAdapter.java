@@ -29,8 +29,6 @@ public class MachinesListAdapter extends RecyclerView.Adapter<MachinesListAdapte
     public MachinesListAdapter(Context c, ArrayList<Machine> machines){
         this.machines = machines;
         this.c = c;
-        Log.v("yo", "yo");
-
     }
 
     @Override
