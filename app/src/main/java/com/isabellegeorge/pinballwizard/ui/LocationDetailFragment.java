@@ -2,6 +2,7 @@ package com.isabellegeorge.pinballwizard.ui;
 
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,7 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
     @Bind(R.id.saveLocationButton) Button mSaveLocation;
     @Bind(R.id.addressFragment) TextView mAddressLocation;
     @Bind(R.id.locationMachines) ListView mMachines;
+    @Bind(R.id.loadingMachines) ProgressBar mLoading;
     private int machineCount = 0;
     private Location mLocation;
     private SharedPreferences mSharedPref;
@@ -59,7 +62,6 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
         mLocation = Parcels.unwrap(getArguments().getParcelable("location"));
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
-
 
     public LocationDetailFragment() {}
 
@@ -103,6 +105,11 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
 
                     @Override
                     public void run() {
+                        if(machineNames.length < 1){
+                            mLoading.setVisibility(View.VISIBLE);
+                        } else {
+                            mLoading.setVisibility(View.GONE);
+                        }
                         ArrayAdapter<String> machineAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, machineNames);
                         mMachines.setAdapter(machineAdapter);
                     }

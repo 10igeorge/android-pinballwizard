@@ -20,7 +20,6 @@ import butterknife.ButterKnife;
 public class SplashActivity extends AppCompatActivity {
     @Bind(R.id.splashLogo) TextView mSplashLogo;
     private SharedPreferences mSharedPref;
-    private Firebase ref = new Firebase(Constants.FIREBASE_URL);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
