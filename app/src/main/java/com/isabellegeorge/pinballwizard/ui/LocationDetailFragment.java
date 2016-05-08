@@ -40,6 +40,7 @@ import okhttp3.Response;
 public class LocationDetailFragment extends Fragment implements View.OnClickListener {
     @Bind(R.id.locationTypeFragment) TextView mTypeLabel;
     @Bind(R.id.locationNameFragment) TextView mNameLabel;
+    @Bind(R.id.numberMachines) TextView mNumberMachines;
     @Bind(R.id.saveLocationButton) Button mSaveLocation;
     @Bind(R.id.addressFragment) TextView mAddressLocation;
     @Bind(R.id.locationMachines) ListView mMachines;
@@ -109,6 +110,7 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
                             mLoading.setVisibility(View.VISIBLE);
                         } else {
                             mLoading.setVisibility(View.GONE);
+                            mNumberMachines.setText(machineCount + " Machines");
                         }
                         ArrayAdapter<String> machineAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, machineNames);
                         mMachines.setAdapter(machineAdapter);
