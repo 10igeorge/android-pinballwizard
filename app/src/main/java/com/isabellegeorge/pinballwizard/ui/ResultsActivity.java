@@ -1,16 +1,21 @@
 package com.isabellegeorge.pinballwizard.ui;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -46,10 +51,14 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
     @Bind(R.id.resultsTextView) TextView mResultsTextView;
     @Bind(R.id.filterSpinner) Spinner mFilter;
     @Bind(R.id.locationsWithPinball) RecyclerView locationsRecycler;
-    private String name, city, mRegion;
-    private SharedPreferences mSharedPreferences;
+    private String name, city, mRegion, item;
+    private SharedPreferences mSharedPref;
     private ProgressDialog loadingResults;
+    private LocationsListAdapter adapter;
+    private MachinesListAdapter machineAdapter;
     public ArrayList<Location> locations = new ArrayList<>();
+    public ArrayList<Location> searchLocations = new ArrayList<>();
+    public ArrayList<Machine> searchMachines = new ArrayList<>();
     public ArrayList<Machine> machines = new ArrayList<>();
 
     String[] filters = new String[] {
@@ -60,8 +69,6 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
         LayoutInflater inflater = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -80,9 +87,87 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
         city = i.getStringExtra("city");
         name = i.getStringExtra("name");
 
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mRegion = mSharedPreferences.getString(Constants.PREFERENCES_REGION_KEY, null);
+        mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        mRegion = mSharedPref.getString(Constants.PREFERENCES_REGION_KEY, null);
     }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present
+        getMenuInflater().inflate(R.menu.nav_drawer, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView search = (SearchView) MenuItemCompat.getActionView(item);
+
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchLocations = new ArrayList<>();
+                searchList(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        return true;
+    }
+
+    public void searchList(String query){
+        if(item.equals("Locations")){
+            boolean locationFound = false;
+            if(!(query.trim().equals(""))){
+                for(int i=0; i<locations.size(); i++){
+                    if(locations.get(i).getName().toLowerCase().contains(query)){
+                        searchLocations.add(locations.get(i));
+                        locationFound = true;
+                    }
+                }
+                if(searchLocations.size() == 0 || !locationFound){
+                    Toast.makeText(ResultsActivity.this, "No results found", Toast.LENGTH_LONG).show();
+                } else {
+                    adapter = new LocationsListAdapter(getApplicationContext(), searchLocations);
+                    locationsRecycler.setAdapter(adapter);
+                }
+            }
+        } else {
+            boolean machineFound = false;
+            if(!(query.trim().equals(""))){
+                for(int i=0; i<machines.size(); i++){
+                    if(machines.get(i).getMachineName().toLowerCase().contains(query)){
+                        searchMachines.add(machines.get(i));
+                        machineFound = true;
+                    }
+                }
+                if(searchMachines.size() == 0 || !machineFound){
+                    Toast.makeText(ResultsActivity.this, "No results found", Toast.LENGTH_LONG).show();
+                } else {
+                    machineAdapter = new MachinesListAdapter(getApplicationContext(), searchMachines);
+                    locationsRecycler.setAdapter(machineAdapter);
+                }
+            }
+        }
+    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_search) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void getLocations(String city){
         loadingResults.show();
@@ -110,7 +195,7 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
                 ResultsActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        LocationsListAdapter adapter = new LocationsListAdapter(getApplicationContext(), locations);
+                        adapter = new LocationsListAdapter(getApplicationContext(), locations);
                         locationsRecycler.setAdapter(adapter);
                         LinearLayoutManager layoutManager = new LinearLayoutManager(ResultsActivity.this);
                         locationsRecycler.setLayoutManager(layoutManager);
@@ -147,8 +232,8 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
                                  return machine.getMachineName().compareTo(t1.getMachineName());
                             }
                         });
-
-                        locationsRecycler.setAdapter(new MachinesListAdapter(getApplicationContext(), machines));
+                        machineAdapter = new MachinesListAdapter(getApplicationContext(), machines);
+                        locationsRecycler.setAdapter(machineAdapter);
                         locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
                         locationsRecycler.setHasFixedSize(true);
                         loadingResults.dismiss();
@@ -160,7 +245,7 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
-        String item = parent.getItemAtPosition(position).toString();
+        item = parent.getItemAtPosition(position).toString();
         Toast.makeText(parent.getContext(), "Filtering by " + item.toLowerCase(), Toast.LENGTH_LONG).show();
         if(item.equals("Locations")){
             loadingResults = new ProgressDialog(this);
@@ -168,7 +253,7 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
             loadingResults.setMessage("Finding locations in your region...");
             loadingResults.setCancelable(false);
             if(mRegion != null) {
-                mResultsTextView.setText("Pinball near " + mSharedPreferences.getString(Constants.PREFERENCES_CITY_KEY, null));
+                mResultsTextView.setText("Pinball near " + mSharedPref.getString(Constants.PREFERENCES_CITY_KEY, null));
                 getLocations(mRegion);
             } else {
                 mResultsTextView.setText("Pinball near " + city);

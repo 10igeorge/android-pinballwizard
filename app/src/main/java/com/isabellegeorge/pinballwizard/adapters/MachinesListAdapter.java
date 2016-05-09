@@ -47,7 +47,6 @@ public class MachinesListAdapter extends RecyclerView.Adapter<MachinesListAdapte
         return machines.size();
     }
 
-
     public class MachinesViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.locationName) TextView locationName;
         @Bind(R.id.locationType) TextView locationType;

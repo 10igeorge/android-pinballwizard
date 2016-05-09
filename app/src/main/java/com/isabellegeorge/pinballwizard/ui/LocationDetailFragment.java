@@ -1,7 +1,5 @@
 package com.isabellegeorge.pinballwizard.ui;
 
-
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
