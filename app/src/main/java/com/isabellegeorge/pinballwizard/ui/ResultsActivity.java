@@ -91,8 +91,6 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
         mRegion = mSharedPref.getString(Constants.PREFERENCES_REGION_KEY, null);
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present
@@ -114,7 +112,6 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
                 return false;
             }
         });
-        mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         return true;
     }
 
@@ -153,21 +150,6 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
             }
         }
     }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_search) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
     private void getLocations(String city){
         loadingResults.show();
