@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +81,6 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
 
     public void setMachinesForLocation(String name){
         final PinballService pinballService = new PinballService();
-        final ArrayList<Machine> setMachines = new ArrayList<>();
         pinballService.findMachinesInRegion(name, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -89,27 +89,22 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                final String[] machineNames = new String[setMachines.size()];
-                ArrayList<Machine> machines = pinballService.processMachinesInRegion(response);
-
-                for(int i=0; i<machines.size(); i++){
-                    if(machines.get(i).getLocationId() == mLocation.getId()){
-                        setMachines.add(machines.get(i));
-                        machineCount ++;
-                    }
-                }
-
-                for(int i=0; i<machineNames.length; i++){
-                    machineNames[i] = setMachines.get(i).getMachineName();
-                }
+                final ArrayList<Machine> machines = pinballService.processMachinesForLocation(response, mLocation.getId());
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        final String[] machineNames = new String[machines.size()];
+                        for(int i=0; i<machineNames.length; i++){
+                            machineNames[i] = machines.get(i).getMachineName();
+                            machineCount ++;
+                        }
+
                         if(machineNames.length < 1){
                             mLoading.setVisibility(View.VISIBLE);
                         } else {
                             mLoading.setVisibility(View.GONE);
+                            Log.v("NOPE", machineNames+"");
                             mNumberMachines.setText(machineCount + " Machines");
                         }
                         ArrayAdapter<String> machineAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, machineNames);
