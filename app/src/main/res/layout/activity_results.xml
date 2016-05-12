@@ -23,11 +23,21 @@
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
         android:layout_height="match_parent"
         android:id="@+id/locationsWithPinball"
         android:layout_below="@+id/filterSpinner"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:textAlignment="center"
+        android:id="@+id/noResults"
+        android:layout_below="@+id/filterSpinner"
+        android:layout_centerHorizontal="true" />
 
     <Spinner
         android:layout_width="wrap_content"

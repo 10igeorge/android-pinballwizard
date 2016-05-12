@@ -87,6 +87,43 @@
 
             </LinearLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/selectedMachine"
+                android:visibility="invisible">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Large Text"
+                    android:id="@+id/selectedMachineName"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Williams (Year)"
+                    android:textStyle="italic"
+                    android:id="@+id/selectedMachineInfo"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/selectedMachineName" />
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/conditionComments"
+                    android:layout_below="@+id/selectedMachineInfo"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+            </RelativeLayout>
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

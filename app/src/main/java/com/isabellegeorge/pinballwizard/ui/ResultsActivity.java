@@ -51,6 +51,7 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
     @Bind(R.id.resultsTextView) TextView mResultsTextView;
     @Bind(R.id.filterSpinner) Spinner mFilter;
     @Bind(R.id.locationsWithPinball) RecyclerView locationsRecycler;
+    @Bind(R.id.noResults) TextView noResults;
     private String name, city, mRegion, item;
     private SharedPreferences mSharedPref;
     private ProgressDialog loadingResults;
@@ -177,12 +178,18 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
                 ResultsActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter = new LocationsListAdapter(getApplicationContext(), locations);
-                        locationsRecycler.setAdapter(adapter);
-                        LinearLayoutManager layoutManager = new LinearLayoutManager(ResultsActivity.this);
-                        locationsRecycler.setLayoutManager(layoutManager);
-                        locationsRecycler.setHasFixedSize(true);
-                        loadingResults.dismiss();
+                        if(!locations.isEmpty()){
+                            adapter = new LocationsListAdapter(getApplicationContext(), locations);
+                            locationsRecycler.setAdapter(adapter);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(ResultsActivity.this);
+                            locationsRecycler.setLayoutManager(layoutManager);
+                            locationsRecycler.setHasFixedSize(true);
+                            loadingResults.dismiss();
+                        } else {
+                            noResults.setText("Sorry, no results were found");
+                            loadingResults.dismiss();
+                        }
+
                     }
                 });
             }
@@ -208,17 +215,22 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
                 ResultsActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Collections.sort(machines, new Comparator<Machine>() {
-                            @Override
-                            public int compare(Machine machine, Machine t1) {
-                                 return machine.getMachineName().compareTo(t1.getMachineName());
-                            }
-                        });
-                        machineAdapter = new MachinesListAdapter(getApplicationContext(), machines);
-                        locationsRecycler.setAdapter(machineAdapter);
-                        locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
-                        locationsRecycler.setHasFixedSize(true);
-                        loadingResults.dismiss();
+                        if(!machines.isEmpty()){
+                            Collections.sort(machines, new Comparator<Machine>() {
+                                @Override
+                                public int compare(Machine machine, Machine t1) {
+                                    return machine.getMachineName().compareTo(t1.getMachineName());
+                                }
+                            });
+                            machineAdapter = new MachinesListAdapter(getApplicationContext(), machines);
+                            locationsRecycler.setAdapter(machineAdapter);
+                            locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
+                            locationsRecycler.setHasFixedSize(true);
+                            loadingResults.dismiss();
+                        } else {
+                            noResults.setText("Sorry, no results were found");
+                            loadingResults.dismiss();
+                        }
                     }
                 });
             }

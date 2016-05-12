@@ -23,7 +23,6 @@ import butterknife.ButterKnife;
 public class LocationsViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.locationName) TextView locationName;
     @Bind(R.id.locationType) TextView locationType;
-    //        @Bind(R.id.numberMachines) TextView numberMachines;
     private Context c;
     private ArrayList<com.isabellegeorge.pinballwizard.models.Location> mLocations = new ArrayList<>();
 
@@ -47,6 +46,5 @@ public class LocationsViewHolder extends RecyclerView.ViewHolder {
     public void bindLocation(com.isabellegeorge.pinballwizard.models.Location location){
         locationName.setText(location.getName());
         locationType.setText(location.getLocationType());
-//            numberMachines.setText(location.getNumberMachines() + " Machines");
     }
 }

@@ -8,6 +8,4 @@
     android:id="@+id/savedLocations"
     tools:context="com.isabellegeorge.pinballwizard.ui.SavedLocationsActivity">
 
-
-
 </android.support.design.widget.CoordinatorLayout>

@@ -195,7 +195,6 @@ public class PinballService {
 
     public ArrayList<Machine> processMachinesForLocation(Response response, int compareId) {
         ArrayList<Machine> machines = new ArrayList<>();
-
         try {
             String jsonData = response.body().string();
             if (response.isSuccessful()) {
@@ -206,13 +205,20 @@ public class PinballService {
                     Integer id = detailsJSON.getJSONObject("machine").getInt("id");
                     Integer locationId = detailsJSON.getInt("location_id");
                     String name = detailsJSON.getJSONObject("machine").getString("name");
-                    Integer year = detailsJSON.getJSONObject("machine").getInt("year");
-                    String manufacturer = detailsJSON.getJSONObject("machine").getString("manufacturer");
+
+                    Integer year = 0;
+                    if(!detailsJSON.getJSONObject("machine").isNull("year")){
+                        year = detailsJSON.getJSONObject("machine").getInt("year");
+                    }
+
+                    String manufacturer = "";
+                    if(detailsJSON.getJSONObject("machine").getString("manufacturer") != null){
+                        manufacturer = detailsJSON.getJSONObject("machine").getString("manufacturer");
+                    }
 
                     if(locationId == compareId){
                         Machine machine = new Machine(locationId, id, name, year, manufacturer);
                         machines.add(machine);
-                        Log.v("Machina", ""+name);
                     }
                 }
             }

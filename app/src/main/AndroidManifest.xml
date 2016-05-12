@@ -16,6 +16,7 @@
             android:theme="@style/NoAppBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -35,7 +36,7 @@
         <activity
             android:name=".ui.SavedLocationsActivity"
             android:label="@string/title_activity_saved_locations"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

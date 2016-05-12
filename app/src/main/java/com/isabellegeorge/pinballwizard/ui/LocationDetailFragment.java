@@ -11,10 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +46,10 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
     @Bind(R.id.addressFragment) TextView mAddressLocation;
     @Bind(R.id.locationMachines) ListView mMachines;
     @Bind(R.id.loadingMachines) ProgressBar mLoading;
+    @Bind(R.id.selectedMachineName) TextView mSelectedMachineName;
+    @Bind(R.id.selectedMachineInfo) TextView mSelectedMachineInfo;
+    @Bind(R.id.selectedMachine) RelativeLayout mSelectedMachine;
+    private ArrayList<Machine> machines = new ArrayList<>();
     private int machineCount = 0;
     private Location mLocation;
     private SharedPreferences mSharedPref;
@@ -67,8 +73,8 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        machineCount = 0;
         setMachinesForLocation(mLocation.getUrlPath());
-
         View view = inflater.inflate(R.layout.fragment_location_detail, container, false);
         ButterKnife.bind(this, view);
         mAddressLocation.setOnClickListener(this);
@@ -89,7 +95,7 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                final ArrayList<Machine> machines = pinballService.processMachinesForLocation(response, mLocation.getId());
+                machines = pinballService.processMachinesForLocation(response, mLocation.getId());
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -104,11 +110,25 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
                             mLoading.setVisibility(View.VISIBLE);
                         } else {
                             mLoading.setVisibility(View.GONE);
-                            Log.v("NOPE", machineNames+"");
                             mNumberMachines.setText(machineCount + " Machines");
                         }
+
                         ArrayAdapter<String> machineAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, machineNames);
                         mMachines.setAdapter(machineAdapter);
+                        mMachines.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                String item = mMachines.getItemAtPosition(i).toString();
+                                for(Machine machine: machines){
+                                    if(item.equals(machine.getMachineName())){
+                                        mMachines.setVisibility(View.INVISIBLE);
+                                        mSelectedMachine.setVisibility(View.VISIBLE);
+                                        mSelectedMachineName.setText(machine.getMachineName());
+                                        mSelectedMachineInfo.setText(machine.getManufacturer() + " (" + machine.getMachineYear()+")");
+                                    }
+                                }
+                            }
+                        });
                     }
                 });
             }
@@ -127,7 +147,6 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
                 break;
             case (R.id.saveLocationButton):
                 String uid = mSharedPref.getString(Constants.KEY_UID, null);
-
                 Firebase ref = new Firebase(Constants.FIREBASE_URL_LOCATIONS).child(uid);
                 Firebase pushRef = ref.push();
                 mLocation.setPushId(pushRef.getKey());
