@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.isabellegeorge.pinballwizard.ui.SavedLocationsFragment">
+    tools:context="com.isabellegeorge.pinballwizard.ui.SavedLocationsActivity">
 
 
     <android.support.v7.widget.RecyclerView
@@ -22,6 +22,14 @@
         android:layout_marginTop="92dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/noLocations"
+        android:layout_marginTop="180dp"
+        android:layout_gravity="center_horizontal" />
 
 
 </FrameLayout>

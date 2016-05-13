@@ -15,6 +15,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.Query;
@@ -35,6 +36,7 @@ public class SavedLocationsActivity extends NavDrawerActivity implements OnStart
     private FirebaseLocationsListAdapter mAdapter;
     private SharedPreferences sharedPref;
     @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
+    @Bind(R.id.noLocations) TextView mNoLocations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

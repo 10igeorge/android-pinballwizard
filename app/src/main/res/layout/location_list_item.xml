@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:scaleX="0.60"
                 android:scaleY="0.60"
-                android:visibility="invisiblegit add ."
+                android:visibility="invisible"
                 android:id="@+id/dragIcon"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"

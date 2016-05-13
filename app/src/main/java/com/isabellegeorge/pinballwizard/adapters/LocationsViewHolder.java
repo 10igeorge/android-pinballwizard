@@ -54,11 +54,18 @@ public class LocationsViewHolder extends RecyclerView.ViewHolder implements Item
 
     @Override
     public void onItemSelected() {
-        //  Will add code for animations here later.
+        itemView.animate()
+                .alpha(0.7f)
+                .scaleX(0.9f)
+                .scaleY(0.9f)
+                .setDuration(500);
     }
 
     @Override
     public void onItemClear() {
-        //  Will add code for removing animations here later.
+        itemView.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f);
     }
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 import com.isabellegeorge.pinballwizard.R;
 import com.isabellegeorge.pinballwizard.adapters.LocationPagerAdapter;
 import com.isabellegeorge.pinballwizard.models.Location;
+import com.isabellegeorge.pinballwizard.util.ScaleAndFadePageTransformer;
 
 import org.parceler.Parcels;
 
@@ -26,6 +27,7 @@ public class LocationDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_detail);
         ButterKnife.bind(this);
+        mViewPager.setPageTransformer(true, new ScaleAndFadePageTransformer());
 
         mLocations = Parcels.unwrap(getIntent().getParcelableExtra("locations"));
         int startingPosition = Integer.parseInt(getIntent().getStringExtra("startPosition"));
