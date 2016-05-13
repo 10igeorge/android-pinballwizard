@@ -185,6 +185,7 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
                             locationsRecycler.setLayoutManager(layoutManager);
                             locationsRecycler.setHasFixedSize(true);
                             loadingResults.dismiss();
+                            Toast.makeText(getBaseContext(), "Filtering by " + item.toLowerCase(), Toast.LENGTH_LONG).show();
                         } else {
                             noResults.setText("Sorry, no results were found");
                             loadingResults.dismiss();
@@ -227,6 +228,7 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
                             locationsRecycler.setLayoutManager(new LinearLayoutManager(ResultsActivity.this));
                             locationsRecycler.setHasFixedSize(true);
                             loadingResults.dismiss();
+                            Toast.makeText(getBaseContext(), "Filtering by " + item.toLowerCase(), Toast.LENGTH_LONG).show();
                         } else {
                             noResults.setText("Sorry, no results were found");
                             loadingResults.dismiss();
@@ -240,7 +242,6 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
         item = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(), "Filtering by " + item.toLowerCase(), Toast.LENGTH_LONG).show();
         if(item.equals("Locations")){
             loadingResults = new ProgressDialog(this);
             loadingResults.setTitle("Loading...");

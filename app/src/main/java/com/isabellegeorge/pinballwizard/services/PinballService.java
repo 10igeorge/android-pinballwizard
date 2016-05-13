@@ -229,4 +229,44 @@ public class PinballService {
         }
         return machines;
     }
+
+    public static void findMachineComments(String name, Callback callback) {
+        OkHttpClient client = new OkHttpClient.Builder().build();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(Constants.MACHINES_REGION_URL).newBuilder();
+        urlBuilder.addPathSegment(name);
+        urlBuilder.addPathSegment("location_machine_xrefs");
+        String url = urlBuilder.toString();
+        Request request = new Request.Builder().url(url).build();
+        Call call = client.newCall(request);
+        call.enqueue(callback);
+    }
+
+    public ArrayList<String> processCommentsForMachines(Response response, int machineId, int locationId) {
+        ArrayList<String> comments = new ArrayList<>();
+        try {
+            String jsonData = response.body().string();
+            if (response.isSuccessful()) {
+                JSONObject locationMachineJSON = new JSONObject(jsonData);
+                JSONArray locationMachinesJSON = locationMachineJSON.getJSONArray("location_machine_xrefs");
+                for (int i = 0; i < locationMachinesJSON.length(); i++) {
+                    JSONObject detailsJSON = locationMachinesJSON.getJSONObject(i);
+                    JSONArray machineConditionsJSON = detailsJSON.getJSONArray("machine_conditions");
+                    if(machineConditionsJSON.length() > 0){
+                        for(int j=0; j < machineConditionsJSON.length(); j++){
+                            JSONObject commentJSON = machineConditionsJSON.getJSONObject(j);
+                            if(machineId == detailsJSON.getInt("machine_id") && locationId == detailsJSON.getInt("location_id")){
+                                String comment = commentJSON.getString("comment");
+                                comments.add(comment);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return comments;
+    }
 }
