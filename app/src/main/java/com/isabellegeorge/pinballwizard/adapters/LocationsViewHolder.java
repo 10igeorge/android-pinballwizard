@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.isabellegeorge.pinballwizard.R;
 import com.isabellegeorge.pinballwizard.ui.LocationDetailActivity;
+import com.isabellegeorge.pinballwizard.util.ItemTouchHelperViewHolder;
 
 import org.parceler.Parcels;
 
@@ -20,9 +23,10 @@ import butterknife.ButterKnife;
  * Created by Guest on 5/4/16.
  */
 
-public class LocationsViewHolder extends RecyclerView.ViewHolder {
+public class LocationsViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
     @Bind(R.id.locationName) TextView locationName;
     @Bind(R.id.locationType) TextView locationType;
+    @Bind(R.id.dragIcon) ImageView mItem;
     private Context c;
     private ArrayList<com.isabellegeorge.pinballwizard.models.Location> mLocations = new ArrayList<>();
 
@@ -46,5 +50,15 @@ public class LocationsViewHolder extends RecyclerView.ViewHolder {
     public void bindLocation(com.isabellegeorge.pinballwizard.models.Location location){
         locationName.setText(location.getName());
         locationType.setText(location.getLocationType());
+    }
+
+    @Override
+    public void onItemSelected() {
+        //  Will add code for animations here later.
+    }
+
+    @Override
+    public void onItemClear() {
+        //  Will add code for removing animations here later.
     }
 }

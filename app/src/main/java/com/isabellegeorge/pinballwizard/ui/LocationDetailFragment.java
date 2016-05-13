@@ -109,56 +109,57 @@ public class LocationDetailFragment extends Fragment implements View.OnClickList
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 machines = pinballService.processMachinesForLocation(response, mLocation.getId());
+                if(getActivity() != null){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final String[] machineNames = new String[machines.size()];
+                            for(int i=0; i<machineNames.length; i++){
+                                machineNames[i] = machines.get(i).getMachineName();
+                                machineCount ++;
+                            }
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        final String[] machineNames = new String[machines.size()];
-                        for(int i=0; i<machineNames.length; i++){
-                            machineNames[i] = machines.get(i).getMachineName();
-                            machineCount ++;
-                        }
+                            if(machineNames.length < 1){
+                                mLoading.setVisibility(View.VISIBLE);
+                            } else {
+                                mLoading.setVisibility(View.INVISIBLE);
+                                mNumberMachines.setText(machineCount + " Machines");
+                            }
 
-                        if(machineNames.length < 1){
-                            mLoading.setVisibility(View.VISIBLE);
-                        } else {
-                            mLoading.setVisibility(View.INVISIBLE);
-                            mNumberMachines.setText(machineCount + " Machines");
-                        }
-
-                        ArrayAdapter<String> machineAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, machineNames);
-                        mMachines.setAdapter(machineAdapter);
-                        mMachines.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                String item = mMachines.getItemAtPosition(i).toString();
-                                for(Machine machine: machines){
-                                    if(item.equals(machine.getMachineName())){
-                                        mSelectedMachine.setX(1000);
-                                        mSelectedMachine.setVisibility(View.VISIBLE);
-                                        mSelectedMachine.animate().translationX(0);
-                                        mMachines.animate().translationX(1000);
-                                        getMachineConditions(mLocation.getUrlPath(), machine.getMachineId(), mLocation.getId());
-                                        mSelectedMachineName.setText(machine.getMachineName());
-                                        mSelectedMachineInfo.setText(machine.getManufacturer() + " (" + machine.getMachineYear()+")");
+                            ArrayAdapter<String> machineAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, machineNames);
+                            mMachines.setAdapter(machineAdapter);
+                            mMachines.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    String item = mMachines.getItemAtPosition(i).toString();
+                                    for(Machine machine: machines){
+                                        if(item.equals(machine.getMachineName())){
+                                            mSelectedMachine.setX(1000);
+                                            mSelectedMachine.setVisibility(View.VISIBLE);
+                                            mSelectedMachine.animate().translationX(0);
+                                            mMachines.animate().translationX(1000);
+                                            getMachineConditions(mLocation.getUrlPath(), machine.getMachineId(), mLocation.getId());
+                                            mSelectedMachineName.setText(machine.getMachineName());
+                                            mSelectedMachineInfo.setText(machine.getManufacturer() + " (" + machine.getMachineYear()+")");
+                                        }
                                     }
                                 }
-                            }
-                        });
-                        mBack.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if(commentAdapter != null){
-                                    commentAdapter.clear();
-                                }
+                            });
+                            mBack.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if(commentAdapter != null){
+                                        commentAdapter.clear();
+                                    }
 
-                                mSelectedMachine.setVisibility(View.INVISIBLE);
-                                mSelectedMachine.animate().translationX(1000);
-                                mMachines.animate().translationX(0);
-                            }
-                        });
-                    }
-                });
+                                    mSelectedMachine.setVisibility(View.INVISIBLE);
+                                    mSelectedMachine.animate().translationX(1000);
+                                    mMachines.animate().translationX(0);
+                                }
+                            });
+                        }
+                    });
+                }
             }
         });
     }

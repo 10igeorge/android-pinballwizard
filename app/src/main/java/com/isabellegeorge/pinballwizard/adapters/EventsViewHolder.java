@@ -39,7 +39,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
         public void bindEvent(com.isabellegeorge.pinballwizard.models.Event event){
             mEventName.setText(event.getName());
             mEventDescription.setText(event.getDescription());
-            mStartDate.setText(event.getStartDate());
+            mStartDate.setText(event.getStartDate() +" -");
             mEndDate.setText(event.getEndDate());
         }
 
