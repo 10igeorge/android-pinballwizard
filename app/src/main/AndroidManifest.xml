@@ -37,6 +37,11 @@
             android:name=".ui.SavedLocationsActivity"
             android:label="@string/title_activity_saved_locations"
             android:theme="@style/AppTheme" />
+        <activity android:name=".ui.EventsActivity"
+            android:theme="@style/AppTheme">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ui.MainActivity" /></activity>
     </application>
 
 </manifest>

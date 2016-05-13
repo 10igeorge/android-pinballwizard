@@ -4,6 +4,7 @@ package com.isabellegeorge.pinballwizard.services;
 import android.util.Log;
 
 import com.isabellegeorge.pinballwizard.Constants;
+import com.isabellegeorge.pinballwizard.models.Event;
 import com.isabellegeorge.pinballwizard.models.Location;
 import com.isabellegeorge.pinballwizard.models.Machine;
 import com.isabellegeorge.pinballwizard.models.Region;
@@ -268,5 +269,48 @@ public class PinballService {
             e.printStackTrace();
         }
         return comments;
+    }
+
+    public static void findEvents(String name, Callback callback) {
+        OkHttpClient client = new OkHttpClient.Builder().build();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(Constants.LOCATIONS_URL).newBuilder();
+        urlBuilder.addPathSegment(name);
+        urlBuilder.addPathSegment("events");
+        String url = urlBuilder.toString();
+        Request request = new Request.Builder().url(url).build();
+        Call call = client.newCall(request);
+        call.enqueue(callback);
+    }
+
+    public ArrayList<Event> processEvents(Response response) {
+        ArrayList<Event> events = new ArrayList<>();
+        try {
+            String jsonData = response.body().string();
+            if (response.isSuccessful()) {
+                JSONObject eventsJSON = new JSONObject(jsonData);
+                JSONArray eventJSON = eventsJSON.getJSONArray("events");
+                for (int i = 0; i < eventJSON.length(); i++) {
+                    JSONObject detailsJSON = eventJSON.getJSONObject(i);
+                    String name = detailsJSON.getString("name");
+                    String description = detailsJSON.getString("long_desc");
+                    String startDate = detailsJSON.getString("start_date");
+
+                    String endDate;
+                    if(detailsJSON.getString("end_date") != null){
+                        endDate = detailsJSON.getString("end_date");
+                    } else {
+                        endDate = "0";
+                    }
+
+                    Event event = new Event(name, description, startDate, endDate);
+                    events.add(event);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return events;
     }
 }

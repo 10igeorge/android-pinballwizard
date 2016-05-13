@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -90,6 +92,17 @@ public class ResultsActivity extends NavDrawerActivity implements AdapterView.On
 
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         mRegion = mSharedPref.getString(Constants.PREFERENCES_REGION_KEY, null);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ResultsActivity.this, EventsActivity.class);
+                i.putExtra("name", name);
+                i.putExtra("city", city);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
