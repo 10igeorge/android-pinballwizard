@@ -22,8 +22,7 @@
                 android:textStyle="italic"
                 android:id="@+id/eventStartDate"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:text="2016-04-01"/>
+                android:layout_alignParentRight="true"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -31,8 +30,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/eventEndDate"
                 android:layout_below="@+id/eventStartDate"
-                android:layout_alignParentRight="true"
-                android:text="2016-12-31"/>
+                android:layout_alignParentRight="true"/>
 
 
             <TextView
@@ -41,13 +39,13 @@
                 android:id="@+id/eventName"
                 android:textSize="17dp"
                 android:textStyle="bold"
-                android:text="Event Name"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/colorPrimary"
+                android:layout_toLeftOf="@+id/eventStartDate"
+                android:layout_toStartOf="@+id/eventStartDate" />
 
             <TextView
                 android:layout_width="265dp"
                 android:layout_height="wrap_content"
-                android:text="POP SuperLeague is a new kind of casual pinball league that anyone can take part in and play on their own schedule. Here is how it works.\n\nThe first Monday of the month, POP HQ will publish the six games that make up the SuperLeague that week.\n\nGo to POP HQ anytime during normal business hours an...\n4605 Northeast Fremont Street, Portland, OR, "
                 android:id="@+id/eventDescription"
                 android:layout_below="@+id/eventName"
                 android:layout_alignParentLeft="true"

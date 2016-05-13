@@ -1,21 +1,25 @@
 package com.isabellegeorge.pinballwizard.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.isabellegeorge.pinballwizard.R;
 
-public class SavedLocationsActivity extends AppCompatActivity {
+public class SavedLocationsActivity extends NavDrawerActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_saved_locations);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        LayoutInflater inflater = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.activity_saved_locations, null, false);
+        drawer.addView(contentView, 0);        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getFragmentManager().beginTransaction().replace(R.id.savedLocations, new SavedLocationsFragment()).commit();

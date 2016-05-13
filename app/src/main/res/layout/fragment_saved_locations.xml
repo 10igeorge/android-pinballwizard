@@ -10,13 +10,17 @@
         android:id="@+id/recyclerView"
         android:layout_gravity="left|bottom" />
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/eventsTextView"
         android:text="Saved Locations"
-        android:id="@+id/textView2"
-        android:layout_marginTop="62dp"
-        android:layout_gravity="center|top" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="92dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
 
 </FrameLayout>
