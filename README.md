@@ -1,9 +1,11 @@
 # Pinball Wizard
 
 ## Description
-Pinball Wizard is an application created to find pinball near you. By entering your zip code, you may search for locations nearby that have pinball machines (and which ones). Looking for a certain machine? Filter by machine names to find locations that have what you're looking for.
+Pinball Wizard is an application created to find pinball near you. You can create an account, log in, and choose your region. After selecting a region, you can search pinball by locations or machines. Interested in going to a pinball event? The FAB in the bottom right will show you upcoming events in your region. Click on a location to see all the machines that currently reside in that location. To find more information about the condition of that machine, click on it for user submitted comments.
 
-Future implementations will include a Pinball Map API to deliver actual locations and machines, user input on machines at specific locations, events in your area, and a secret pinball game only accessible through gestures.
+This app was created using the Pinball Map API.
+
+Enjoy!
 
 ## Setup
 Clone this repository while in desired directory:
@@ -11,8 +13,9 @@ Clone this repository while in desired directory:
 ``` $ git clone 
 https://github.com/10igeorge/android-pinballwizard.git ```
 
-
 Open Android Studio or Eclipse and import project
+
+Connect an Android phone with a USB cord and click 'Run' to get the app on your phone.
 
 ## Legal
 Copyright (c) 2016 Isabelle George This software is licensed under the 
