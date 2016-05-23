@@ -1,5 +1,7 @@
 # Pinball Wizard
 
+Created by Isabelle George
+
 ## Description
 Pinball Wizard is an application created to find pinball near you. You can create an account, log in, and choose your region. After selecting a region, you can search pinball by locations or machines. Interested in going to a pinball event? The FAB in the bottom right will show you upcoming events in your region. Click on a location to see all the machines that currently reside in that location. To find more information about the condition of that machine, click on it for user submitted comments.
 
